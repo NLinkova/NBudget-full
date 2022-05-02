@@ -1,46 +1,34 @@
-# Getting Started with Create React App and Redux
+# NBudget
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+This student project, TAFE Queensland.
+NBudget is a money control system.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+# Purpose
+
+NBudget is a new user-friendly service that allows to control your budget. This control budget system collects information about users’ expenses and income and prepares a visual report and diagram for the user. The service is created to provide the best possible user experience for money management. It will be a mobile-friendly web app, which could be accessible at any time.
+
+# Target Audience
+
+This system is designed to supply financial observe and advice for those who desire to control their budget. The system allows users to add their expenses and savings. This allows users to visually estimate their budget and check categories that could be reduced or increased. Manual typing money amount in different categories gives a possibility to actually understand and think it over. Which makes users more conscious about money flow.
+
+# Business Requirements
+
+- 1 All users must be registered in the system.
+- 2 Users will be able to add their expenses and savings goals in specific categories.
+- 3 There is no limit number for categories of expenses savings.
+- 4 Users cannot see other users' statistics and profiles.
+- 5 Admin can view users list with statistics.
+- 6 Admin sends financial advice to help to achieve users' savings goals.
+- 7 All personal information should be secure
+- 8 The service does not have access to a bank account.
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm i && npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### link
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+https://nlinkova.github.io/NBudget/

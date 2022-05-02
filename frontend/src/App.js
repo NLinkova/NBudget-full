@@ -13,14 +13,6 @@ import Home from "./pages/Home";
 
 function App() {
   const [isDarkMode, setDarkMode] = useState(false);
-  const [currentUser, setCurrentUser] = React.useState({});
-  const [goals, setGoals] = React.useState([]);
-  const [transactions, setTransactions] = React.useState([]);
-  const [isLoading, setLoading] = useState(false);
-
-  // стейты для входа
-  const [loggedIn, setLoggedIn] = React.useState(false);
-  const [email, setUserEmail] = React.useState("");
 
   //dark/light mode functions
   useEffect(() => {
@@ -54,18 +46,12 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Header
-          SwitchTheme={onThemeSwitch}
-          loggedIn={loggedIn}
-          // onSignOut={handleSignOut}
-          email={email}
-        />
+        <Header SwitchTheme={onThemeSwitch} />
         <div className="AppBody">
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/register" element={<Register />} />
-            {/* <Route exact path="/profile" element={<Profile />} /> */}
             <Route exact path="/dashboard" element={<Dashboard />} />
             <Route exact path="*" element={<PageNotFound />} />
           </Routes>

@@ -19,7 +19,7 @@ function Header({ SwitchTheme }) {
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid justify-content-between">
           <div className="d-flex justify-content-start">
-            <Link to="/">
+            <Link className="navbar-brand nav-link" to="/">
               <img
                 className="header__logo"
                 src={headerLogo}
@@ -72,12 +72,6 @@ function Header({ SwitchTheme }) {
                       Dashboard
                     </Link>
                   </li>
-                  <li className="nav-item">
-                    <Link to="/profile" className="nav-link">
-                      Profile
-                    </Link>
-                  </li>
-
                   <li className="nav-item">
                     <button className="btn" onClick={onLogout}>
                       Sing out
