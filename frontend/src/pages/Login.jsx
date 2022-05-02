@@ -76,6 +76,9 @@ export default function Login() {
                 value={email}
                 placeholder="Enter your email"
                 onChange={onChange}
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                required
+                title="Must be a valid email"
               />
             </div>
             <div className="form-group m-2">
@@ -90,6 +93,9 @@ export default function Login() {
                 value={password}
                 placeholder="Enter password"
                 onChange={onChange}
+                pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,}"
+                title="At least 4 or more characters"
+                required
               />
             </div>
             <div className="form-group">
