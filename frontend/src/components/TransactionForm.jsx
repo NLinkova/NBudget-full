@@ -90,6 +90,7 @@ function TransactionForm() {
                   placeholder="transaction"
                   id="text"
                   value={text}
+                  required
                   onChange={(e) => setText(e.target.value)}
                 />
 
@@ -98,8 +99,10 @@ function TransactionForm() {
                   name="amount"
                   placeholder="amount"
                   id="amount"
-                  // pattern="/^[0-9]+$/"
+                  pattern="[-]?[0-9]*[.,]?[0-9]+"
+                  inputMode="decimal"
                   value={amount}
+                  required
                   onChange={(e) => setAmount(e.target.value)}
                 />
               </div>

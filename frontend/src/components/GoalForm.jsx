@@ -81,8 +81,10 @@ function GoalForm() {
                   type="text"
                   name="text"
                   placeholder="goal"
+                  pattern="[a-z].{2,15}$"
                   id="text"
                   value={text}
+                  required
                   onChange={(e) => setText(e.target.value)}
                 />
 
@@ -91,8 +93,10 @@ function GoalForm() {
                   name="amount"
                   placeholder="amount"
                   id="amount"
-                  // pattern="/^[0-9]+$/"
+                  inputMode="decimal"
+                  pattern="^([a-zA-Z]){4,}$"
                   value={amount}
+                  required
                   onChange={(e) => setAmount(e.target.value)}
                 />
               </div>

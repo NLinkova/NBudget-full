@@ -82,6 +82,13 @@
   margin-bottom: 20px;
 }
 
+.small {
+  text-decoration: none;
+  transition: opacity 0.3s;
+  margin-bottom: 60px;
+  color: #000000;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
