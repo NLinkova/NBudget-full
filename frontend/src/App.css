@@ -1,0 +1,112 @@
+.App {
+  text-align: center;
+  margin:0px;
+  height:100vh;
+}
+
+.AppBody {
+  text-align: center;
+  margin:20px;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.error {
+  color: red;
+}
+
+.header__logo {
+  width: 33px;
+  height: 33px;
+  margin: auto;
+}
+
+@media screen and (max-width: 650px) {
+  .header__logo  {
+    width: 24px;
+    height: 24px;
+    margin: auto;
+  }
+}
+
+
+
+.home-page {
+  margin: 40px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-content: center;
+}
+
+.home-logo {
+  height: 120px;
+}
+
+.home-link {
+  text-decoration: none;
+  transition: opacity 0.3s;
+  margin-bottom: 60px;
+  color: #000000;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e6e6e6;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-family: inherit;
+}
+
+.form-group label {
+  text-align: left;
+  display: block;
+  margin: 0 0 5px 3px;
+}
+
+.form-check-label {
+  color: rgba(0,0,0,.55);
+}
+
+.footer {
+  margin-bottom: 20px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
