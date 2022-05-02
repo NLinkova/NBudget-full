@@ -1,19 +1,19 @@
 import { FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-// import { useSelector, useDispatch } from "react-redux";
-// import { logout, reset } from "../features/auth/authSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { logout, reset } from "../features/auth/authSlice";
 import headerLogo from "../logo.png";
 
-function Header({ SwitchTheme, email, onSignOut }) {
-  //   const navigate = useNavigate();
-  //   const dispatch = useDispatch();
-  //   const { user } = useSelector((state) => state.auth);
-
-  //   const onLogout = () => {
-  //     dispatch(logout());
-  //     dispatch(reset());
-  //     navigate("/");
-  //   };
+function Header({ SwitchTheme }) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  console.log(user);
+  const onLogout = () => {
+    dispatch(logout());
+    dispatch(reset());
+    navigate("/");
+  };
 
   return (
     <div>
@@ -29,7 +29,9 @@ function Header({ SwitchTheme, email, onSignOut }) {
               NBudget
             </Link>
           </div>
-          <p className="header__email align-self-center m-auto">{email}email</p>
+          <p className="header__email align-self-center m-auto">
+            {user && user.email}
+          </p>
           <button
             className="navbar-toggler"
             type="button"
@@ -48,7 +50,7 @@ function Header({ SwitchTheme, email, onSignOut }) {
                   Home
                 </Link>
               </li>
-              <li className="nav-item m-auto navbar-light ">
+              <li className="nav-item m-auto navbar-light">
                 <div className="form-check form-switch">
                   <input
                     className="nav-link form-check-input"
@@ -64,35 +66,39 @@ function Header({ SwitchTheme, email, onSignOut }) {
                   </label>
                 </div>
               </li>
-              <li className="nav-item">
-                <Link to="/dashboard" className="nav-link">
-                  Dashboard
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/profile" className="nav-link">
-                  Profile
-                </Link>
-              </li>
+              {user ? (
+                <>
+                  <li className="nav-item">
+                    <Link to="/dashboard" className="nav-link">
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/profile" className="nav-link">
+                      Profile
+                    </Link>
+                  </li>
 
-              <li className="nav-item">
-                <Link to="/" className="nav-link" onClick={onSignOut}>
-                  Sing out
-                </Link>
-              </li>
-
-              <>
-                <li className="nav-item">
-                  <Link to="/login" className="nav-link">
-                    Login
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/register" className="nav-link">
-                    Register
-                  </Link>
-                </li>
-              </>
+                  <li className="nav-item">
+                    <button className="btn" onClick={onLogout}>
+                      Sing out
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="nav-item">
+                    <Link to="/login" className="nav-link">
+                      Login
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/register" className="nav-link">
+                      Register
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

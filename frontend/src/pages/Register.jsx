@@ -60,6 +60,7 @@ export default function Register() {
       email,
       password,
     };
+    console.log(userData);
     dispatch(register(userData));
   };
 
@@ -79,15 +80,13 @@ export default function Register() {
                 <FontAwesomeIcon icon={faEnvelope} /> Email address
               </label>
               <input
-                className="form-control"
                 type="email"
-                placeholder="Please enter your email"
-                id="txtEmailR"
-                // onChange={onChange}
-                // {...register("email", {
-                //   required: true,
-                //   pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/,
-                // })}
+                className="form-control"
+                id="email"
+                name="email"
+                value={email}
+                placeholder="Enter your email"
+                onChange={onChange}
               />
               {/* <span className="text-primary">
                 {errors.email && "Invalid email. Please try again"}
@@ -98,10 +97,12 @@ export default function Register() {
                 <FontAwesomeIcon icon={faKey} /> Password
               </label>
               <input
-                className="form-control"
                 type="password"
-                placeholder="Please enter your password"
-                id="txtPasswordR"
+                className="form-control"
+                id="password"
+                name="password"
+                value={password}
+                placeholder="Enter password"
                 onChange={onChange}
                 // {...register("password", {
                 //   required: true,
