@@ -8,31 +8,6 @@ import Spinner from "../components/Spinner";
 import { getGoals, reset } from "../features/goals/goalSlice";
 
 function Dashboard() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const { user } = useSelector((state) => state.auth);
-
-  //   useEffect(() => {
-  //     if (isError) {
-  //       console.log(message);
-  //     }
-
-  //     if (!user) {
-  //       navigate("/login");
-  //     }
-
-  //     dispatch(getGoals());
-
-  //     return () => {
-  //       dispatch(reset());
-  //     };
-  //   }, [user, navigate, isError, message, dispatch]);
-
-  //   if (isLoading) {
-  //     return <Spinner />;
-  //   }
-
   return (
     <>
       <div>

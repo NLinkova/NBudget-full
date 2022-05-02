@@ -10,7 +10,12 @@ function GoalItem({ goal }) {
       <tr>
         <td>{goal.text}</td>
         <td>{goal.amount}</td>
-        <a onClick={() => dispatch(deleteGoal(goal._id))} className="close"></a>
+        <button
+          onClick={() => dispatch(deleteGoal(goal._id))}
+          className="btn btn-outline-info"
+        >
+          x
+        </button>
       </tr>
     </>
   );

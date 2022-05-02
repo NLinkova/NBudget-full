@@ -60,7 +60,7 @@ function GoalForm() {
               <tr>
                 <td>Car</td>
                 <td>1500,00</td>
-                <button></button>
+                <button className="btn btn-outline-info">x</button>
               </tr>
               {goals.length > 0 ? (
                 <>

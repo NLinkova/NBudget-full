@@ -64,7 +64,7 @@ function TransactionForm() {
               <tr>
                 <td>Fuel</td>
                 <td>1400,00</td>
-                <button></button>
+                <button className="btn btn-outline-info">x</button>
               </tr>
               {transactions.length > 0 ? (
                 <>

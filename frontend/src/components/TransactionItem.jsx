@@ -10,10 +10,12 @@ function TransactionItem({ transaction }) {
       <tr>
         <td>{transaction.text}</td>
         <td>{transaction.amount}</td>
-        <a
+        <button
           onClick={() => dispatch(deleteTransaction(transaction._id))}
-          className="close"
-        ></a>
+          className="btn btn-outline-info"
+        >
+          x
+        </button>
       </tr>
     </>
   );
