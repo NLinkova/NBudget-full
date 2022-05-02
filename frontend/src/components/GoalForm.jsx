@@ -69,7 +69,7 @@ function GoalForm() {
                   ))}
                 </>
               ) : (
-                <h3>You have not set any goals</h3>
+                <p>You have not set any goals</p>
               )}
               <tr></tr>
             </tbody>

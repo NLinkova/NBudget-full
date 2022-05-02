@@ -49,7 +49,7 @@ function TransactionForm() {
     <div>
       <div className="card-header py-3">
         <h6 className="text-primary fw-bold m-0">
-          <div className="btn-group" role="group"></div>Savings Transactions
+          <div className="btn-group" role="group"></div>Transactions
         </h6>
         <div className="table-responsive">
           <table className="table">
@@ -76,7 +76,7 @@ function TransactionForm() {
                   ))}
                 </>
               ) : (
-                <h3>You have not set any transactions</h3>
+                <p>You have not set any transactions</p>
               )}
               <tr></tr>
             </tbody>
