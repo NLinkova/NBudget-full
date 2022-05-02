@@ -29,7 +29,7 @@ export default function Login() {
     }
 
     if (isSuccess || user) {
-      navigate("/");
+      navigate("/dashboard");
     }
 
     dispatch(reset());
@@ -69,41 +69,28 @@ export default function Login() {
                 <FontAwesomeIcon icon={faEnvelope} /> Email address
               </label>
               <input
-                id="email"
-                className="form-control"
                 type="email"
-                placeholder="Please enter your email"
+                className="form-control"
+                id="email"
+                name="email"
                 value={email}
+                placeholder="Enter your email"
                 onChange={onChange}
-                // {...register("email", {
-                //   required: true,
-                //   pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/,
-                // })}
               />
-              {/* <span className="text-primary">
-                {errors.email && "Invalid email. Please try again"}
-              </span> */}
             </div>
             <div className="form-group m-2">
               <label>
                 <FontAwesomeIcon icon={faKey} /> Password
               </label>
               <input
-                id="password"
-                className="form-control"
                 type="password"
-                placeholder="Please enter your password"
-                onChange={onChange}
+                className="form-control"
+                id="password"
+                name="password"
                 value={password}
-                // {...register("password", {
-                //   required: true,
-                //   pattern: /^[\w-\.].{4,}$/,
-                // })}
+                placeholder="Enter password"
+                onChange={onChange}
               />
-              {/* <span className="text-primary">
-                {errors.password &&
-                  "Invalid password. Please try more than 4 characters"}
-              </span> */}
             </div>
             <div className="form-group">
               <button type="submit" className="btn btn-primary m-4">
