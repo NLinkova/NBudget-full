@@ -11,6 +11,9 @@ const createTransaction = async (transactionData, token) => {
   };
 
   const response = await axios.post(API_URL, transactionData, config);
+  if (response.data) {
+    localStorage.setItem("transactions", JSON.stringify(response.data));
+  }
 
   return response.data;
 };

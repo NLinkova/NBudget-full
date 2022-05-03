@@ -22,13 +22,11 @@ function Home() {
         <p>
           This system is designed to supply financial observe and advice for
           those who desire to control their budget. The system allows users to
-          add their expenses, income, and savings. The service automatically
-          generates a monthly report with diagrams to demonstrate the money
-          circle. This allows users to visually estimate their budget and check
-          categories that could be reduced or increased. Manual typing money
-          amount in different categories gives a possibility to actually
-          understand and think it over. Which makes users more conscious about
-          money flow.
+          add their expenses and savings. This allows users to visually estimate
+          their budget and check categories that could be reduced or increased.
+          Manual typing money amount in different categories gives a possibility
+          to actually understand and think it over. Which makes users more
+          conscious about money flow.
         </p>
         <h2>
           Interesting?{" "}

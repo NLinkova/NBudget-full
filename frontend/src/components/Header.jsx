@@ -1,6 +1,15 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, reset } from "../features/auth/authSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHome,
+  faCreditCard,
+  faUser,
+  faPencil,
+  faUserAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import headerLogo from "../logo.png";
 
 function Header({ SwitchTheme }) {
@@ -8,6 +17,7 @@ function Header({ SwitchTheme }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   console.log(user);
+
   const onLogout = () => {
     dispatch(logout());
     dispatch(reset());
@@ -46,19 +56,19 @@ function Header({ SwitchTheme }) {
             <ul className="navbar-nav">
               <li className="nav-item">
                 <Link to="/" className="nav-link active" aria-current="page">
-                  Home
+                  <FontAwesomeIcon icon={faHome} /> Home
                 </Link>
               </li>
               <li className="nav-item m-auto navbar-light">
                 <div className="form-check form-switch">
                   <input
-                    className="nav-link form-check-input"
+                    className="form-check-input"
                     type="checkbox"
                     id="flexSwitchCheckDefault"
                     onChange={SwitchTheme}
                   />
                   <label
-                    className="form-check-label"
+                    className="form-check-label nav-link active"
                     htmlFor="flexSwitchCheckDefault"
                   >
                     Light/Dark mode
@@ -69,12 +79,12 @@ function Header({ SwitchTheme }) {
                 <>
                   <li className="nav-item">
                     <Link to="/dashboard" className="nav-link">
-                      Dashboard
+                      <FontAwesomeIcon icon={faCreditCard} /> Dashboard
                     </Link>
                   </li>
                   <li className="nav-item">
                     <button className="btn" onClick={onLogout}>
-                      Sing out
+                      <FontAwesomeIcon icon={faUser} /> Sing out
                     </button>
                   </li>
                 </>
@@ -82,12 +92,12 @@ function Header({ SwitchTheme }) {
                 <>
                   <li className="nav-item">
                     <Link to="/login" className="nav-link">
-                      Login
+                      <FontAwesomeIcon icon={faUserAlt} /> Register
                     </Link>
                   </li>
                   <li className="nav-item">
                     <Link to="/register" className="nav-link">
-                      Register
+                      <FontAwesomeIcon icon={faPencil} /> Register
                     </Link>
                   </li>
                 </>

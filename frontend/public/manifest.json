@@ -3,7 +3,7 @@
   "short_name": "NBudget",
   "description": "App about money",
   "scope": "/",
-  "display": "fullscreen",
+  "display": "standalone",
   "start_url": "/",
   "theme_color": "#FFFFFF",
   "background_color": "#FFFFFF",

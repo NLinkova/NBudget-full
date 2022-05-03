@@ -16,7 +16,7 @@ export default function Register() {
 
   const { email, password } = formData;
 
-  //states for invalid inout errors
+  //states for invalid input errors
   const [error, setError] = useState(false);
   const [showErrorText, setShowErrorText] = useState(false);
 

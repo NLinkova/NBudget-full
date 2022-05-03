@@ -61,11 +61,6 @@ function TransactionForm() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Fuel</td>
-                <td>1400,00</td>
-                <button className="btn btn-outline-info">x</button>
-              </tr>
               {transactions.length > 0 ? (
                 <>
                   {transactions.map((transaction) => (
@@ -89,6 +84,7 @@ function TransactionForm() {
                   name="text"
                   placeholder="transaction"
                   id="text"
+                  pattern="[A-Za-z ]{2,15}"
                   value={text}
                   required
                   onChange={(e) => setText(e.target.value)}
@@ -99,7 +95,6 @@ function TransactionForm() {
                   name="amount"
                   placeholder="amount"
                   id="amount"
-                  pattern="[-]?[0-9]*[.,]?[0-9]+"
                   inputMode="decimal"
                   value={amount}
                   required

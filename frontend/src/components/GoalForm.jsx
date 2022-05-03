@@ -57,11 +57,6 @@ function GoalForm() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Car</td>
-                <td>1500,00</td>
-                <button className="btn btn-outline-info">x</button>
-              </tr>
               {goals.length > 0 ? (
                 <>
                   {goals.map((goal) => (
@@ -81,7 +76,7 @@ function GoalForm() {
                   type="text"
                   name="text"
                   placeholder="goal"
-                  pattern="[a-z].{2,15}$"
+                  pattern="[A-Za-z' ]{2,15}"
                   id="text"
                   value={text}
                   required
@@ -94,7 +89,7 @@ function GoalForm() {
                   placeholder="amount"
                   id="amount"
                   inputMode="decimal"
-                  pattern="^([a-zA-Z]){4,}$"
+                  pattern="[0-9]{1,}"
                   value={amount}
                   required
                   onChange={(e) => setAmount(e.target.value)}
