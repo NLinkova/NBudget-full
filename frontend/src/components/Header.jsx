@@ -92,7 +92,7 @@ function Header({ SwitchTheme }) {
                 <>
                   <li className="nav-item">
                     <Link to="/login" className="nav-link">
-                      <FontAwesomeIcon icon={faUserAlt} /> Register
+                      <FontAwesomeIcon icon={faUserAlt} /> Login
                     </Link>
                   </li>
                   <li className="nav-item">
