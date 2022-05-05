@@ -71,7 +71,9 @@ function TransactionForm() {
                   ))}
                 </>
               ) : (
-                <p>You have not set any transactions</p>
+                <td>
+                  <p>You have not set any transactions</p>
+                </td>
               )}
               <tr></tr>
             </tbody>

@@ -88,9 +88,22 @@ const deleteGoal = asyncHandler(async (req, res) => {
   res.status(200).json({ id: req.params.id });
 });
 
+// @desc    Get goals per month
+// @route   GET /api/goals
+// @access  Private
+const getGoalsMonth = asyncHandler(async (req, res) => {
+  const goals = await Goal.find(
+    { user: req.user.id },
+    { created_on: { $getField: "2022-05-00", $setField: "2022-05-30" } }
+  );
+
+  res.status(200).json(goals);
+});
+
 module.exports = {
   getGoals,
   setGoal,
   updateGoal,
   deleteGoal,
+  getGoalsMonth,
 };
