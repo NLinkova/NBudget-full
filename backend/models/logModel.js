@@ -14,7 +14,6 @@ const logSchema = mongoose.Schema(
     },
     usertype: {
       type: String,
-      enum: ["admin", "user"],
     },
     action: {
       type: String,

@@ -7,7 +7,7 @@ const User = require("../models/userModel");
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  const { email, usertype, password } = req.body;
 
   if (!email || !password) {
     res.status(400);
@@ -29,7 +29,7 @@ const registerUser = asyncHandler(async (req, res) => {
   // Create user
   const user = await User.create({
     email,
-    // usertype,
+    usertype,
     password: hashedPassword, //hashed password
   });
 
@@ -37,7 +37,7 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(201).json({
       _id: user.id,
       email: user.email,
-      // usertype: user.usertype,
+      usertype: user.usertype,
       token: generateToken(user._id),
     });
   } else {

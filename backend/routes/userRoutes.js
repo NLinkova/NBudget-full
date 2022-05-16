@@ -4,7 +4,7 @@ const { celebrate, Joi } = require("celebrate");
 const {
   registerUser,
   loginUser,
-  logoutUser,
+  // logoutUser,
   getMe,
   getAllUsers,
 } = require("../controllers/userController");
@@ -15,7 +15,7 @@ router.post(
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().email().required(),
-      // usertype: Joi.string().required().default("user"),
+      usertype: Joi.string().min(2).max(6),
       password: Joi.string().required().min(4),
     }),
   }),
