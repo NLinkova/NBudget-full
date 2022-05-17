@@ -9,6 +9,7 @@ const slowDown = require("express-slow-down");
 const { errors } = require("celebrate");
 const asyncHandler = require("express-async-handler");
 const helmet = require("helmet");
+const cors = require('cors')
 
 const { errorHandler } = require("./middleware/errorMiddleware");
 const Log = require("./models/logModel.js");
@@ -22,6 +23,26 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// const CORS_WHITELIST = [
+//   'http://localhost:3000',
+//   'https://localhost:3000',
+//   'https://localhost:5000',
+//   'http://localhost:5000',
+// ];
+// const corsOption = {
+//   credentials: true,
+//   origin: function checkCorsList(origin, callback) {
+//     if (CORS_WHITELIST.indexOf(origin) !== -1 || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+// };
+
+// app.use(cors(corsOption));
+app.use(cors());
 
 //rate limiting
 const apiLimiter = rateLimit({
@@ -42,43 +63,57 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// User access
-app.use((reqest, response, next) => {
-  //define routes for different roles
-  const routes = {
-    'unathorised' : [
-      '/api/users/register',
-      '/api/users/login',
-    ],
-    'user' : [
-      '/api/users',
-      '/api/users/:id',
-      '/api/users/me',
-      '/api/users/',
-      '/api/goals/',
-      '/api/goals',
-      '/api/goals/:id',
-      '/api/transactions',
-      '/api/transactions/',
-      '/api/transactions/:id',
-    ],
-    'admin' : [
-      '/api/users/allUsers',
-      '/api/users/:id',
-      '/api/users/register',
-      '/api/users/login',
-      '/api/users/register',
-      '/api/users',
-      '/api/users/',
-      '/api/goals/',
-      '/api/goals',
-      '/api/goals/:id',
-      '/api/transactions',
-      '/api/transactions/',
-      '/api/transactions/:id',
-    ]
-  }
-})
+// // User access
+// app.use((request, response, next) => {
+//   //define routes for different roles
+//   const routes = {
+//     'unathorised' : [
+//       '/api/users/register',
+//       '/api/users/login',
+//     ],
+//     'user' : [
+//       '/api/users',
+//       '/api/users/:id',
+//       '/api/users/me',
+//       '/api/users/',
+//       '/api/goals/',
+//       '/api/goals',
+//       '/api/goals/:id',
+//       '/api/transactions',
+//       '/api/transactions/',
+//       '/api/transactions/:id',
+//     ],
+//     'admin' : [
+//       '/api/users/allUsers',
+//       '/api/users/:id',
+//       '/api/users/register',
+//       '/api/users/login',
+//       '/api/users/register',
+//       '/api/users',
+//       '/api/users/',
+//       '/api/goals/',
+//       '/api/goals',
+//       '/api/goals/:id',
+//       '/api/transactions',
+//       '/api/transactions/',
+//       '/api/transactions/:id',
+//     ]
+//   }
+//   let user_type = 'unathorised'
+//   if (request.user.usertype != null) {
+//     user_type = request.user.usertype
+//   }
+//   if (user_type in routes) {
+//     const allowed_routes = routes[user_type]
+//     if (allowed_routes.some(url => request.originalUrl.startsWith(url))) {
+//       next()
+//     } else {
+//       response.status(403).json('access forbidden')
+//     }
+//   } else {
+//     response.status(401).json('client not authorised')
+//   }
+// })
 
 // Apply the rate limiting middleware to API calls only
 app.use("/api", apiLimiter);
@@ -119,9 +154,9 @@ app.use(
       log.save();
       next();
     } catch (error) {
-      console.log(error);
-      res.status(401);
-      throw new Error("Not inserted");
+        console.log(error);
+        res.status(401);
+        throw new Error("Not inserted");
     }
   })
 );

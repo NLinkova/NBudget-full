@@ -101,6 +101,9 @@ function Header({ SwitchTheme }) {
                   </li>
                 </>
               )}
+              {/* {
+                user.admin ? <></> : <></>
+              } */}
             </ul>
           </div>
         </div>
