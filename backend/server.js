@@ -42,6 +42,44 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+// User access
+app.use((reqest, response, next) => {
+  //define routes for different roles
+  const routes = {
+    'unathorised' : [
+      '/api/users/register',
+      '/api/users/login',
+    ],
+    'user' : [
+      '/api/users',
+      '/api/users/:id',
+      '/api/users/me',
+      '/api/users/',
+      '/api/goals/',
+      '/api/goals',
+      '/api/goals/:id',
+      '/api/transactions',
+      '/api/transactions/',
+      '/api/transactions/:id',
+    ],
+    'admin' : [
+      '/api/users/allUsers',
+      '/api/users/:id',
+      '/api/users/register',
+      '/api/users/login',
+      '/api/users/register',
+      '/api/users',
+      '/api/users/',
+      '/api/goals/',
+      '/api/goals',
+      '/api/goals/:id',
+      '/api/transactions',
+      '/api/transactions/',
+      '/api/transactions/:id',
+    ]
+  }
+})
+
 // Apply the rate limiting middleware to API calls only
 app.use("/api", apiLimiter);
 app.use("/api", slowDowner);

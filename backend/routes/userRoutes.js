@@ -7,6 +7,7 @@ const {
   // logoutUser,
   getMe,
   getAllUsers,
+  deleteUser
 } = require("../controllers/userController");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -24,6 +25,8 @@ router.post(
 router.post("/login", loginUser);
 // router.post("/loguot", logoutUser);does not necessary as token expires in 10 days
 router.get("/me", protect, getMe);
+//for admin only
 router.get("/all", getAllUsers);
+router.delete("/:id", deleteUser);
 
 module.exports = router;
