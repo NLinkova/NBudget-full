@@ -101,6 +101,11 @@ function Header({ SwitchTheme }) {
                   </li>
                 </>
               )}
+                                <li className="nav-item">
+                    <Link to="/admin" className="nav-link">
+                      <FontAwesomeIcon icon={faPencil} /> All users
+                    </Link>
+                  </li>
               {/* {
                 user.admin ? <></> : <></>
               } */}

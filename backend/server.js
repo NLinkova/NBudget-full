@@ -3,13 +3,15 @@ const express = require("express");
 const dotenv = require("dotenv"); // to create global variables
 const colors = require("colors"); //to color
 const morgan = require("morgan");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const connectDB = require("./config/db"); //connection to database
 const rateLimit = require("express-rate-limit");
 const slowDown = require("express-slow-down");
 const { errors } = require("celebrate");
 const asyncHandler = require("express-async-handler");
 const helmet = require("helmet");
-const cors = require('cors')
+const cors = require("cors");
 
 const { errorHandler } = require("./middleware/errorMiddleware");
 const Log = require("./models/logModel.js");
@@ -122,6 +124,15 @@ app.use("/api/transactions", require("./routes/transactionRoutes"));
 app.use("/api/goals", require("./routes/goalRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 
+//session
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true },
+  })
+);
 //setting various HTTP headers.
 // This disables the `contentSecurityPolicy` middleware but keeps the rest.
 app.use(
@@ -154,9 +165,9 @@ app.use(
       log.save();
       next();
     } catch (error) {
-        console.log(error);
-        res.status(401);
-        throw new Error("Not inserted");
+      console.log(error);
+      res.status(401);
+      throw new Error("Not inserted");
     }
   })
 );

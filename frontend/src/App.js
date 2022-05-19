@@ -10,6 +10,8 @@ import Header from "./components/Header";
 import PageNotFound from "./components/PageNotFound";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
+import AllUsers from "./pages/AllUsers"
+import AddUser from "./pages/AddUser";
 
 function App() {
   const [isDarkMode, setDarkMode] = useState(false);
@@ -53,6 +55,8 @@ function App() {
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/register" element={<Register />} />
             <Route exact path="/dashboard" element={<Dashboard />} />
+            <Route exact path="/admin" element={<AllUsers />} />
+            <Route exact path="/adduser" element={<AddUser />} />
             <Route exact path="*" element={<PageNotFound />} />
           </Routes>
           <Footer />

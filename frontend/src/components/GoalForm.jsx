@@ -32,7 +32,6 @@ function GoalForm() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     dispatch(createGoal({ text, amount }));
     setText("");
     setAmount("");
@@ -64,9 +63,11 @@ function GoalForm() {
                   ))}
                 </>
               ) : (
-                <td>
-                  <p>You have not set any goals</p>
-                </td>
+                <tr>
+                  <td>
+                    <p>You have not set any goals</p>
+                  </td>
+                </tr>
               )}
               <tr></tr>
             </tbody>

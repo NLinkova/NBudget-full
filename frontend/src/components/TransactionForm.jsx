@@ -36,7 +36,6 @@ function TransactionForm() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     dispatch(createTransaction({ text, amount }));
     setText("");
     setAmount("");
@@ -71,9 +70,11 @@ function TransactionForm() {
                   ))}
                 </>
               ) : (
-                <td>
-                  <p>You have not set any transactions</p>
-                </td>
+                <tr>
+                  <td>
+                    <p>You have not set any transactions</p>
+                  </td>
+                </tr>
               )}
               <tr></tr>
             </tbody>
@@ -91,7 +92,6 @@ function TransactionForm() {
                   required
                   onChange={(e) => setText(e.target.value)}
                 />
-
                 <input
                   type="number"
                   name="amount"

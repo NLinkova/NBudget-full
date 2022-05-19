@@ -7,7 +7,8 @@ const {
   // logoutUser,
   getMe,
   getAllUsers,
-  deleteUser
+  deleteUser,
+  addUser,
 } = require("../controllers/userController");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -16,7 +17,7 @@ router.post(
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().email().required(),
-      usertype: Joi.string().min(2).max(6),
+      usertype: Joi.string().required().min(2).max(6),
       password: Joi.string().required().min(4),
     }),
   }),
@@ -28,5 +29,16 @@ router.get("/me", protect, getMe);
 //for admin only
 router.get("/all", getAllUsers);
 router.delete("/:id", deleteUser);
+router.post(
+  "/adduser",
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().email().required(),
+      usertype: Joi.string().required().min(2).max(6),
+      password: Joi.string().required().min(4),
+    }),
+  }),
+  registerUser
+);
 
 module.exports = router;
