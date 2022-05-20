@@ -1,30 +1,14 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteUser, getUsers, reset } from "../features/auth/authSlice";
+import { deleteUser, reset } from "../features/auth/authSlice";
 import Spinner from "../components/Spinner";
-import AddUser from "./AddUser";
 
 function AllUsers() {
   let user = JSON.parse(localStorage.getItem("user"));
-  const navigate = useNavigate();
   const { isError, message } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   if (isError) {
-  //     console.log(message);
-  //   }
-  //   // if (!users) {
-  //   //   navigate("/login");
-  //   // }
-  //   // dispatch(getUsers());
-  //   return () => {
-  //     dispatch(reset());
-  //   };
-  // }, [users, navigate, isError, message]);
-
   const [users, setUsers] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
@@ -67,27 +51,6 @@ function AllUsers() {
       });
   }, []);
 
-  // function handleDelete(user) {
-
-  //   dispatch(deleteUser(user._id));
-  //   setUsers((users) => users.filter((c) => c._id !== user._id));
-  // }
-  // function handleDelete(user) {
-  //   setLoading(true);
-  //   dispatch(deleteUser(user._id));
-  //   // fetch("http://localhost:5000/api/users/:id", {
-  //   //   method: "DELETE",
-  //   //   headers: {
-  //   //     Authorization: "Bearer " + user.token,
-  //   //     Accept: "application/json",
-  //   //   },
-  //   // })
-  //   //   .then((users) => {
-  //   //     //копия массив без удаленной карточки
-  //   //     setUsers((users) => users.filter((c) => c._id !== user._id));
-  //   //   })
-  //   //   .catch((err) => console.log(err));
-  // }
   if (isLoading) {
     return <Spinner />;
   }
@@ -126,7 +89,6 @@ function AllUsers() {
                                       dispatch(deleteUser(user._id));
                                       window.location.reload();
                                     }}
-                                    // onClick={handleDelete}
                                     className="btn btn-outline-info"
                                   >
                                     x

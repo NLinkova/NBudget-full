@@ -6,7 +6,6 @@ const user = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
   user: user ? user : null,
-  users: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -149,9 +148,9 @@ export const authSlice = createSlice({
       .addCase(deleteUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.users = state.users.filter(
-          (user) => user._id !== action.payload.id
-        );
+        // state.users = state.users.filter(
+        //   (user) => user._id !== action.payload.id
+        // );
       })
       .addCase(deleteUser.rejected, (state, action) => {
         state.isLoading = false;

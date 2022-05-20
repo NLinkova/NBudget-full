@@ -24,27 +24,118 @@ connectDB();
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
-// const CORS_WHITELIST = [
-//   'http://localhost:3000',
-//   'https://localhost:3000',
-//   'https://localhost:5000',
-//   'http://localhost:5000',
-// ];
-// const corsOption = {
-//   credentials: true,
-//   origin: function checkCorsList(origin, callback) {
-//     if (CORS_WHITELIST.indexOf(origin) !== -1 || !origin) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   },
+//cors
+app.use(cors());
+
+//session middleware
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: false },
+//   })
+// );
+
+// const sess = {
+//   secret: process.env.SESSION_SECRET,
+//   name: "session_id",
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: { secure: false, maxAge: 5000 },
 // };
 
-// app.use(cors(corsOption));
-app.use(cors());
+// if (process.env.NODE_ENV === "production") {
+//   app.set("trust proxy", 1); // trust first proxy
+//   sess.cookie.secure = true; // serve secure cookies
+// }
+
+// app.use(session(sess));
+
+// // User access control middleware
+// app.use((request, response, next) => {
+//   //define routes for different roles
+//   const routes = {
+//     unathorised: ["/api/users/register", "/api/users/login"],
+//     user: [
+//       "/api/users",
+//       "/api/users/:id",
+//       "/api/users/me",
+//       "/api/users/",
+//       "/api/goals/",
+//       "/api/goals",
+//       "/api/goals/:id",
+//       "/api/transactions",
+//       "/api/transactions/",
+//       "/api/transactions/:id",
+//     ],
+//     admin: [
+//       "/api/users/all",
+//       "/api/users/:id",
+//       "/api/users/register",
+//       "/api/users/login",
+//       "/api/users/register",
+//       "/api/users",
+//       "/api/users/",
+//       "/api/users/adduser",
+//       "/api/users/adduser/",
+//       "/api/goals/",
+//       "/api/goals",
+//       "/api/goals/:id",
+//       "/api/transactions",
+//       "/api/transactions/",
+//       "/api/transactions/:id",
+//     ],
+//   };
+//   let user_type = "unathorised";
+//   if (request.session.user.usertype != null) {
+//     user_type = request.session.user.usertype;
+//   }
+//   if (user_type in routes) {
+//     const allowed_routes = routes[user_type];
+//     if (allowed_routes.some((url) => request.originalUrl.startsWith(url))) {
+//       next();
+//     } else {
+//       response.status(403).json("access forbidden");
+//     }
+//   } else {
+//     response.status(401).json("client not authorised");
+//   }
+// });
+
+//logging feature
+app.use(
+  asyncHandler(async (req, res, next) => {
+    // let user = JSON.parse(localStorage.getItem("user"));
+    try {
+      //if user logedd in
+      if (req.user != null) {
+        user = req.user.email;
+        usertype = req.user.usertype;
+      } else {
+        user = "anonymous";
+        usertype = "user";
+      }
+      let log = new Log({
+        ip: req.ip,
+        user: user,
+        email: req.body.email,
+        usertype: usertype,
+        action: req.method,
+        endpoint: req.path,
+      });
+      console.log(log);
+      log.save();
+      next();
+    } catch (error) {
+      console.log(error);
+      res.status(401);
+      throw new Error("Not inserted");
+    }
+  })
+);
 
 //rate limiting
 const apiLimiter = rateLimit({
@@ -65,58 +156,6 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// // User access
-// app.use((request, response, next) => {
-//   //define routes for different roles
-//   const routes = {
-//     'unathorised' : [
-//       '/api/users/register',
-//       '/api/users/login',
-//     ],
-//     'user' : [
-//       '/api/users',
-//       '/api/users/:id',
-//       '/api/users/me',
-//       '/api/users/',
-//       '/api/goals/',
-//       '/api/goals',
-//       '/api/goals/:id',
-//       '/api/transactions',
-//       '/api/transactions/',
-//       '/api/transactions/:id',
-//     ],
-//     'admin' : [
-//       '/api/users/allUsers',
-//       '/api/users/:id',
-//       '/api/users/register',
-//       '/api/users/login',
-//       '/api/users/register',
-//       '/api/users',
-//       '/api/users/',
-//       '/api/goals/',
-//       '/api/goals',
-//       '/api/goals/:id',
-//       '/api/transactions',
-//       '/api/transactions/',
-//       '/api/transactions/:id',
-//     ]
-//   }
-//   let user_type = 'unathorised'
-//   if (request.user.usertype != null) {
-//     user_type = request.user.usertype
-//   }
-//   if (user_type in routes) {
-//     const allowed_routes = routes[user_type]
-//     if (allowed_routes.some(url => request.originalUrl.startsWith(url))) {
-//       next()
-//     } else {
-//       response.status(403).json('access forbidden')
-//     }
-//   } else {
-//     response.status(401).json('client not authorised')
-//   }
-// })
-
 // Apply the rate limiting middleware to API calls only
 app.use("/api", apiLimiter);
 app.use("/api", slowDowner);
@@ -124,51 +163,11 @@ app.use("/api/transactions", require("./routes/transactionRoutes"));
 app.use("/api/goals", require("./routes/goalRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 
-//session
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true },
-  })
-);
 //setting various HTTP headers.
 // This disables the `contentSecurityPolicy` middleware but keeps the rest.
 app.use(
   helmet({
     contentSecurityPolicy: false,
-  })
-);
-
-//logging feature
-app.use(
-  asyncHandler(async (req, res, next) => {
-    try {
-      //if anuthoresied user
-      let user = "anonymous";
-      let usertype = "user";
-      //if user logedd in
-      if (req.user) {
-        user = req.user.id;
-        usertype = req.user.usertype;
-      }
-      let log = new Log({
-        ip: req.ip,
-        user: user,
-        email: req.body.email,
-        usertype: usertype,
-        action: req.method,
-        endpoint: req.path,
-      });
-      console.log(log);
-      log.save();
-      next();
-    } catch (error) {
-      console.log(error);
-      res.status(401);
-      throw new Error("Not inserted");
-    }
   })
 );
 
