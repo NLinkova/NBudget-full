@@ -68,24 +68,26 @@ function AllUsers() {
   }, []);
 
   // function handleDelete(user) {
+
   //   dispatch(deleteUser(user._id));
   //   setUsers((users) => users.filter((c) => c._id !== user._id));
   // }
-  function handleDelete(user) {
-    setLoading(true);
-    fetch("http://localhost:5000/api/users/:id", {
-      method: "DELETE",
-      headers: {
-        Authorization: "Bearer " + user.token,
-        Accept: "application/json",
-      },
-    })
-      .then((users) => {
-        //копия массив без удаленной карточки
-        setUsers((users) => users.filter((c) => c._id !== user._id));
-      })
-      .catch((err) => console.log(err));
-  }
+  // function handleDelete(user) {
+  //   setLoading(true);
+  //   dispatch(deleteUser(user._id));
+  //   // fetch("http://localhost:5000/api/users/:id", {
+  //   //   method: "DELETE",
+  //   //   headers: {
+  //   //     Authorization: "Bearer " + user.token,
+  //   //     Accept: "application/json",
+  //   //   },
+  //   // })
+  //   //   .then((users) => {
+  //   //     //копия массив без удаленной карточки
+  //   //     setUsers((users) => users.filter((c) => c._id !== user._id));
+  //   //   })
+  //   //   .catch((err) => console.log(err));
+  // }
   if (isLoading) {
     return <Spinner />;
   }
@@ -120,10 +122,11 @@ function AllUsers() {
                                 <td>{user.usertype}</td>
                                 <td>
                                   <button
-                                    // onClick={() =>
-                                    //   dispatch(deleteUser(user._id))
-                                    // }
-                                    onClick={handleDelete}
+                                    onClick={() => {
+                                      dispatch(deleteUser(user._id));
+                                      window.location.reload();
+                                    }}
+                                    // onClick={handleDelete}
                                     className="btn btn-outline-info"
                                   >
                                     x

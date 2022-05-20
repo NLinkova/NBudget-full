@@ -35,28 +35,20 @@ const getUsers = async (token) => {
     },
   };
 
-  const response = await axios.get(API_URL, config);
+  const response = await axios.get(API_URL + "all", config);
 
   return response.data;
 };
 
 // Delete user
 const deleteUser = async (userId) => {
-  // const config = {
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   }, //убрать конфиг
-  // };
-
   const response = await axios.delete(API_URL + userId);
-
   return response.data;
 };
 
 // add user
 const addUser = async (userData) => {
   const response = await axios.post(API_URL + "adduser", userData);
-
   return response.data;
 };
 

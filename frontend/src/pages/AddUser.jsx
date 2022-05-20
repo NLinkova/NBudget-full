@@ -93,7 +93,6 @@ export default function AddUser() {
       usertype,
       password,
     };
-    console.log(userData);
     dispatch(addUser(userData));
     navigate("/admin");
   };
