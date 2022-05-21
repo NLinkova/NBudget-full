@@ -88,7 +88,6 @@ export default function Login() {
       email,
       password,
     };
-    console.log(userData);
     dispatch(login(userData));
   };
 

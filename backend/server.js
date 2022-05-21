@@ -54,56 +54,78 @@ if (process.env.NODE_ENV === "production") {
 
 app.use(session(sess));
 
-// // User access control middleware
-// app.use((request, response, next) => {
-//   //define routes for different roles
-//   const routes = {
-//     unathorised: ["/api/users/register", "/api/users/login"],
-//     user: [
-//       "/api/users",
-//       "/api/users/:id",
-//       "/api/users/me",
-//       "/api/users/",
-//       "/api/goals/",
-//       "/api/goals",
-//       "/api/goals/:id",
-//       "/api/transactions",
-//       "/api/transactions/",
-//       "/api/transactions/:id",
-//     ],
-//     admin: [
-//       "/api/users/all",
-//       "/api/users/:id",
-//       "/api/users/register",
-//       "/api/users/login",
-//       "/api/users/register",
-//       "/api/users",
-//       "/api/users/",
-//       "/api/users/adduser",
-//       "/api/users/adduser/",
-//       "/api/goals/",
-//       "/api/goals",
-//       "/api/goals/:id",
-//       "/api/transactions",
-//       "/api/transactions/",
-//       "/api/transactions/:id",
-//     ],
-//   };
-//   let user_type = "unathorised";
-//   if (request.session.user.usertype != null) {
-//     user_type = request.session.user.usertype;
-//   }
-//   if (user_type in routes) {
-//     const allowed_routes = routes[user_type];
-//     if (allowed_routes.some((url) => request.originalUrl.startsWith(url))) {
-//       next();
-//     } else {
-//       response.status(403).json("access forbidden");
-//     }
-//   } else {
-//     response.status(401).json("client not authorised");
-//   }
-// });
+// cookie parser middleware
+app.use(cookieParser());
+
+// User access control middleware
+app.use((request, response, next) => {
+  //define routes for different roles
+  const routes = {
+    unathorised: [
+      "/api/users/register",
+      "/api/users/register/",
+      "/api/users/login",
+      "/api/users/login/",
+      "/api/",
+      "/api",
+    ],
+    user: [
+      "/api/users/register",
+      "/api/users/register/",
+      "/api/users/login",
+      "/api/users/login/",
+      "/api/",
+      "/api",
+      "/api/users",
+      "/api/users/:id",
+      "/api/users/me",
+      "/api/users/",
+      "/api/goals/",
+      "/api/goals",
+      "/api/goals/:id",
+      "/api/transactions",
+      "/api/transactions/",
+      "/api/transactions/:id",
+    ],
+    admin: [
+      "/api/users/register",
+      "/api/users/register/",
+      "/api/users/login",
+      "/api/users/login/",
+      "/api/",
+      "/api",
+      "/api/users/all",
+      "/api/users/:id",
+      "/api/users/register",
+      "/api/users/login",
+      "/api/users/register",
+      "/api/users",
+      "/api/users/",
+      "/api/users/adduser",
+      "/api/users/adduser/",
+      "/api/goals/",
+      "/api/goals",
+      "/api/goals/:id",
+      "/api/transactions",
+      "/api/transactions/",
+      "/api/transactions/:id",
+    ],
+  };
+  let user_type = "unathorised";
+  if (user) {
+    user_type = request.user.usertype;
+  }
+  if (user_type in routes) {
+    const allowed_routes = routes[user_type];
+    if (allowed_routes.some((url) => request.originalUrl.startsWith(url))) {
+      next();
+    } else {
+      response.status(403).json("access forbidden");
+    }
+  } else {
+    response.status(401).json("client not authorised");
+  }
+});
 
 //logging feature
 app.use(
@@ -111,9 +133,9 @@ app.use(
     // let user = JSON.parse(localStorage.getItem("user"));
     try {
       //if user logedd in
-      if (req.user != null) {
-        user = req.user.email;
-        usertype = req.user.usertype;
+      if (req.session.user != null) {
+        user = req.session.user.email;
+        usertype = req.session.user.usertype;
       } else {
         user = "anonymous";
         usertype = "user";
@@ -122,7 +144,7 @@ app.use(
         ip: req.ip,
         user: user,
         email: req.body.email,
-        usertype: usertype,
+        usertype: user.usertype,
         action: req.method,
         endpoint: req.path,
       });

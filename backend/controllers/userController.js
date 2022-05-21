@@ -59,8 +59,14 @@ const loginUser = asyncHandler(async (req, res) => {
     res.json({
       _id: user.id,
       email: user.email,
+      usertype: user.usertype,
       token: generateToken(user._id),
     });
+    // setup session information
+    res.session.user = {
+      email: user.email,
+      usertype: user.usertype,
+    };
   } else {
     res.status(400);
     throw new Error("Invalid credentials");
