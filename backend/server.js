@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 //cors
 app.use(cors());
 
-//session middleware
+// session middleware
 // app.use(
 //   session({
 //     secret: process.env.SESSION_SECRET,
@@ -39,20 +39,20 @@ app.use(cors());
 //   })
 // );
 
-// const sess = {
-//   secret: process.env.SESSION_SECRET,
-//   name: "session_id",
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: { secure: false, maxAge: 5000 },
-// };
+const sess = {
+  secret: process.env.SESSION_SECRET,
+  name: "session_id",
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false, maxAge: 5000 },
+};
 
-// if (process.env.NODE_ENV === "production") {
-//   app.set("trust proxy", 1); // trust first proxy
-//   sess.cookie.secure = true; // serve secure cookies
-// }
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1); // trust first proxy
+  sess.cookie.secure = true; // serve secure cookies
+}
 
-// app.use(session(sess));
+app.use(session(sess));
 
 // // User access control middleware
 // app.use((request, response, next) => {
