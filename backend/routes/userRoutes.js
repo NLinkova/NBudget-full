@@ -10,11 +10,7 @@ const {
   deleteUser,
   addUser,
 } = require("../controllers/userController");
-const {
-  protect,
-  authAdmin,
-  protectAdmin,
-} = require("../middleware/authMiddleware");
+const { protect, protectAdmin } = require("../middleware/authMiddleware");
 
 router.post(
   "/register",
@@ -40,8 +36,7 @@ router.post(
 // router.post("/loguot", logoutUser);does not necessary as token expires in 10 days
 router.get("/me", protect, getMe);
 //for admin only
-router.get("/all", getAllUsers);
-router.delete("/:id", deleteUser);
+router.get("/all", protectAdmin, getAllUsers);
 router.post(
   "/adduser",
   celebrate({
@@ -53,5 +48,7 @@ router.post(
   }),
   registerUser
 );
+
+router.delete("/:id", deleteUser);
 
 module.exports = router;

@@ -60,19 +60,8 @@ const loginUser = asyncHandler(async (req, res) => {
       _id: user.id,
       email: user.email,
       usertype: user.usertype,
-      token: generateToken(user._id),
+      token: generateToken({ _id: user._id, usertype: user.usertype }),
     });
-    res.status(200).cookie("token", token, options).json({
-      success: true,
-      token,
-    });
-
-    // // setup session information
-    // res.session.user = {
-    //   email: user.email,
-    //   usertype: user.usertype,
-    // };
-    console.log(res.session.user);
   } else {
     res.status(400);
     throw new Error("Invalid credentials");
@@ -87,8 +76,8 @@ const getMe = asyncHandler(async (req, res) => {
 });
 
 // Generate JWT token
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+const generateToken = (id, usertype) => {
+  return jwt.sign({ id, usertype }, process.env.JWT_SECRET, {
     expiresIn: "10d", // 10 days expire time
   });
 };

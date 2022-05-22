@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteUser, reset } from "../features/auth/authSlice";
 import Spinner from "../components/Spinner";
@@ -9,12 +9,14 @@ function AllUsers() {
   let user = JSON.parse(localStorage.getItem("user"));
   const { isError, message } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     if (isError) {
       console.log(message);
+      navigate("/");
     }
     if (users !== []) {
       setLoading(false);

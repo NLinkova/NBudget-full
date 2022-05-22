@@ -35,9 +35,6 @@ export default function AddUser() {
     if (isError) {
       toast.error(message);
     }
-    // if (isSuccess || user) {
-    //   navigate("/dashboard");
-    // }
     dispatch(reset());
   }, [isError, isSuccess, message, navigate, dispatch]);
 
