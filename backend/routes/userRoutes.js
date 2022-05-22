@@ -10,7 +10,11 @@ const {
   deleteUser,
   addUser,
 } = require("../controllers/userController");
-const { protect } = require("../middleware/authMiddleware");
+const {
+  protect,
+  authAdmin,
+  protectAdmin,
+} = require("../middleware/authMiddleware");
 
 router.post(
   "/register",
@@ -23,7 +27,16 @@ router.post(
   }),
   registerUser
 );
-router.post("/login", loginUser);
+router.post(
+  "/login",
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().email().required(),
+      password: Joi.string().required().min(4),
+    }),
+  }),
+  loginUser
+);
 // router.post("/loguot", logoutUser);does not necessary as token expires in 10 days
 router.get("/me", protect, getMe);
 //for admin only

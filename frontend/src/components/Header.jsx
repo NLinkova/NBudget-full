@@ -22,8 +22,7 @@ function Header({ SwitchTheme }) {
     dispatch(reset());
     navigate("/");
   };
-  // // Get user from localStorage
-  // const user = JSON.parse(localStorage.getItem("user"));
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -102,7 +101,7 @@ function Header({ SwitchTheme }) {
                   </li>
                 </>
               )}
-              {user && user.usertype == "admin" && (
+              {user && user.usertype === "admin" && (
                 <li className="nav-item">
                   <Link to="/admin" className="nav-link">
                     <FontAwesomeIcon icon={faPencil} /> All users

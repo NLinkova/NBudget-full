@@ -39,93 +39,178 @@ app.use(cors());
 //   })
 // );
 
-const sess = {
-  secret: process.env.SESSION_SECRET,
-  name: "session_id",
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false, maxAge: 5000 },
-};
+// const sess = {
+//   secret: process.env.SESSION_SECRET,
+//   name: "session_id",
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: { secure: false, maxAge: 5000 },
+// };
 
-if (process.env.NODE_ENV === "production") {
-  app.set("trust proxy", 1); // trust first proxy
-  sess.cookie.secure = true; // serve secure cookies
-}
+// if (process.env.NODE_ENV === "production") {
+//   app.set("trust proxy", 1); // trust first proxy
+//   sess.cookie.secure = true; // serve secure cookies
+// }
 
-app.use(session(sess));
+// app.use(session(sess));
 
-// cookie parser middleware
-app.use(cookieParser());
+// // cookie parser middleware
+// app.use(cookieParser());
 
-// User access control middleware
-app.use((request, response, next) => {
-  //define routes for different roles
-  const routes = {
-    unathorised: [
-      "/api/users/register",
-      "/api/users/register/",
-      "/api/users/login",
-      "/api/users/login/",
-      "/api/",
-      "/api",
-    ],
-    user: [
-      "/api/users/register",
-      "/api/users/register/",
-      "/api/users/login",
-      "/api/users/login/",
-      "/api/",
-      "/api",
-      "/api/users",
-      "/api/users/:id",
-      "/api/users/me",
-      "/api/users/",
-      "/api/goals/",
-      "/api/goals",
-      "/api/goals/:id",
-      "/api/transactions",
-      "/api/transactions/",
-      "/api/transactions/:id",
-    ],
-    admin: [
-      "/api/users/register",
-      "/api/users/register/",
-      "/api/users/login",
-      "/api/users/login/",
-      "/api/",
-      "/api",
-      "/api/users/all",
-      "/api/users/:id",
-      "/api/users/register",
-      "/api/users/login",
-      "/api/users/register",
-      "/api/users",
-      "/api/users/",
-      "/api/users/adduser",
-      "/api/users/adduser/",
-      "/api/goals/",
-      "/api/goals",
-      "/api/goals/:id",
-      "/api/transactions",
-      "/api/transactions/",
-      "/api/transactions/:id",
-    ],
-  };
-  let user_type = "unathorised";
-  if (user) {
-    user_type = request.user.usertype;
-  }
-  if (user_type in routes) {
-    const allowed_routes = routes[user_type];
-    if (allowed_routes.some((url) => request.originalUrl.startsWith(url))) {
-      next();
-    } else {
-      response.status(403).json("access forbidden");
-    }
-  } else {
-    response.status(401).json("client not authorised");
-  }
-});
+// res
+//   .cookie("jwt", token, {
+//     maxAge: 3600000,
+//     httpOnly: true,
+//     sameSite: true, // добавили опцию
+//   })
+//   .end();
+
+// //access control middleware
+// app.use((req, res, next) => {
+//   // The user is logged in if they hae session data
+//   let userLoggedIn = req.session.user != null;
+
+//   // define a list of allowed ULs for non-logged in users
+//   let allowedURLs = [
+//     "/api/users/register",
+//     "/api/users/register/",
+//     "/api/users/login",
+//     "/api/users/login/",
+//     "/api/",
+//     "/api",
+//     "/api/users",
+//     "/api/users/:id",
+//     "/api/users/me",
+//     "/api/users/",
+//     "/api/goals/",
+//     "/api/goals",
+//     "/api/goals/:id",
+//     "/api/transactions",
+//     "/api/transactions/",
+//     "/api/transactions/:id",
+//   ];
+
+//   // define a list of ULs for admin only
+//   let adminOnlyUrls = [
+//     "/api/users/register",
+//     "/api/users/register/",
+//     "/api/users/login",
+//     "/api/users/login/",
+//     "/api/",
+//     "/api",
+//     "/api/users/all",
+//     "/api/users/:id",
+//     "/api/users/register",
+//     "/api/users/login",
+//     "/api/users/register",
+//     "/api/users",
+//     "/api/users/",
+//     "/api/users/adduser",
+//     "/api/users/adduser/",
+//     "/api/goals/",
+//     "/api/goals",
+//     "/api/goals/:id",
+//     "/api/transactions",
+//     "/api/transactions/",
+//     "/api/transactions/:id",
+//   ];
+
+//   // if the user is logged in
+//   if (userLoggedIn) {
+//     // if it is admin
+//     if (
+//       req.session.user.usertype == "admin" ||
+//       !adminOnlyUrls.includes(req.originalUrl)
+//     ) {
+//       //let admin through
+//       next(); //next middleware, or step in the pipeline
+//     } else {
+//       //if it is user go to book_list
+//       res.redirect("/api/");
+//     }
+//   } else {
+//     // Else (they are not logged in)
+//     // Check if the url they want is allowed
+//     if (allowedURLs.includes(req.originalUrl)) {
+//       // Allow the guest user through
+//       next();
+//     } else {
+//       // if not allowed - redirect to the login page
+//       res.redirect("/api/");
+//     }
+//   }
+// });
+
+// // User access control middleware
+// app.use((request, response, next) => {
+//   //define routes for different roles
+//   const routes = {
+//     unathorised: [
+//       "/api/users/register",
+//       "/api/users/register/",
+//       "/api/users/login",
+//       "/api/users/login/",
+//       "/api/",
+//       "/api",
+//     ],
+//     user: [
+//       "/api/users/register",
+//       "/api/users/register/",
+//       "/api/users/login",
+//       "/api/users/login/",
+//       "/api/",
+//       "/api",
+//       "/api/users",
+//       "/api/users/:id",
+//       "/api/users/me",
+//       "/api/users/",
+//       "/api/goals/",
+//       "/api/goals",
+//       "/api/goals/:id",
+//       "/api/transactions",
+//       "/api/transactions/",
+//       "/api/transactions/:id",
+//     ],
+//     admin: [
+//       "/api/users/register",
+//       "/api/users/register/",
+//       "/api/users/login",
+//       "/api/users/login/",
+//       "/api/",
+//       "/api",
+//       "/api/users/all",
+//       "/api/users/:id",
+//       "/api/users/register",
+//       "/api/users/login",
+//       "/api/users/register",
+//       "/api/users",
+//       "/api/users/",
+//       "/api/users/adduser",
+//       "/api/users/adduser/",
+//       "/api/goals/",
+//       "/api/goals",
+//       "/api/goals/:id",
+//       "/api/transactions",
+//       "/api/transactions/",
+//       "/api/transactions/:id",
+//     ],
+//   };
+//   let user_type = "unathorised";
+//   if (user) {
+
+//     user_type = request.user.usertype;
+//   }
+//   if (user_type in routes) {
+//     const allowed_routes = routes[user_type];
+//     if (allowed_routes.some((url) => request.originalUrl.startsWith(url))) {
+//       next();
+//     } else {
+//       response.status(403).json("access forbidden");
+//     }
+//   } else {
+//     response.status(401).json("client not authorised");
+//   }
+// });
 
 //logging feature
 app.use(
@@ -133,9 +218,9 @@ app.use(
     // let user = JSON.parse(localStorage.getItem("user"));
     try {
       //if user logedd in
-      if (req.session.user != null) {
-        user = req.session.user.email;
-        usertype = req.session.user.usertype;
+      if (req.user != null) {
+        user = req.user.email;
+        usertype = req.user.usertype;
       } else {
         user = "anonymous";
         usertype = "user";
@@ -185,13 +270,13 @@ app.use("/api/transactions", require("./routes/transactionRoutes"));
 app.use("/api/goals", require("./routes/goalRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 
-//setting various HTTP headers.
-// This disables the `contentSecurityPolicy` middleware but keeps the rest.
-app.use(
-  helmet({
-    contentSecurityPolicy: false,
-  })
-);
+// //setting various HTTP headers.
+// // This disables the `contentSecurityPolicy` middleware but keeps the rest.
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: false,
+//   })
+// );
 
 // Serve frontend
 if (process.env.NODE_ENV === "production") {
