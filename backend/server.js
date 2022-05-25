@@ -6,9 +6,12 @@ const morgan = require("morgan");
 const connectDB = require("./config/db"); //connection to database
 const rateLimit = require("express-rate-limit");
 const slowDown = require("express-slow-down");
+const bodyParser = require("body-parser");
 const { errors } = require("celebrate");
 const asyncHandler = require("express-async-handler");
+const session = require("express-session");
 const helmet = require("helmet");
+const cors = require('cors');
 const ipfilter = require("express-ipfilter").IpFilter;
 
 const { errorHandler } = require("./middleware/errorMiddleware");
@@ -23,27 +26,59 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-//cors
-const cors = (req, res, next) => {
-  const { origin } = req.headers;
-  const { method } = req;
-  const requestHeaders = req.headers["access-control-request-headers"];
-  const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    name: "session_id",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false },
+  })
+);
 
-  res.header("Access-Control-Allow-Origin", origin);
-  res.header("Access-Control-Allow-Credentials", true);
 
-  if (method === "OPTIONS") {
-    res.header("Access-Control-Allow-Methods", DEFAULT_ALLOWED_METHODS);
-    res.header("Access-Control-Allow-Headers", requestHeaders);
+// //cors
+// const cors = (req, res, next) => {
+//   const { origin } = req.headers;
+//   const { method } = req;
+//   const requestHeaders = req.headers["access-control-request-headers"];
+//   const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
 
-    return res.end();
-  }
-  return next();
-};
+//   res.header("Access-Control-Allow-Origin", origin);
+//   res.header("Access-Control-Allow-Credentials", true);
 
-app.use(cors);
+//   if (method === "OPTIONS") {
+//     res.header("Access-Control-Allow-Methods", DEFAULT_ALLOWED_METHODS);
+//     res.header("Access-Control-Allow-Headers", requestHeaders);
+
+//     return res.end();
+//   }
+//   return next();
+// };
+
+// app.use(cors);
+
+// const sess = {
+//   secret: process.env.SESSION_SECRET,
+//   name: "session_id",
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: { secure: false, maxAge: 5000 },
+// };
+
+// if (process.env.NODE_ENV === "production") {
+//   app.set("trust proxy", 1); // trust first proxy
+//   sess.cookie.secure = true; // serve secure cookies
+// }
+
+// app.use(session(sess));
 
 //rate limiting
 const apiLimiter = rateLimit({
@@ -74,20 +109,21 @@ if (process.env.NODE_ENV === "development") {
 //logging feature
 app.use(
   asyncHandler(async (req, res, next) => {
-    // let user = JSON.parse(localStorage.getItem("user"));
+    let userLoggedIn = req.session.user;
+    console.log(userLoggedIn)
     try {
       //if user logedd in
-      if (req.user != null) {
-        user = req.user.email;
-        usertype = req.user.usertype;
+      if (userLoggedIn != null) {
+        user = req.session.user;
+
       } else {
         user = "anonymous";
-        usertype = "user";
+        
       }
       let log = new Log({
         ip: req.ip,
         user: user,
-        email: req.body.email,
+        email: user.email,
         usertype: user.usertype,
         action: req.method,
         endpoint: req.path,
@@ -105,11 +141,62 @@ app.use(
 
 //setting various HTTP headers.
 // This disables the `contentSecurityPolicy` middleware but keeps the rest.
-app.use(
-  helmet({
-    contentSecurityPolicy: false,
-  })
-);
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: false,
+//   })
+// );
+
+// // User access control middleware
+// app.use((request, response, next) => {
+//   //define routes for different roles
+//   const routes = {
+//     unathorised: ["/api/users/register", "/api/users/login"],
+//     user: [
+//       "/api/users",
+//       "/api/users/:id",
+//       "/api/users/me",
+//       "/api/users/",
+//       "/api/goals/",
+//       "/api/goals",
+//       "/api/goals/:id",
+//       "/api/transactions",
+//       "/api/transactions/",
+//       "/api/transactions/:id",
+//     ],
+//     admin: [
+//       "/api/users/all",
+//       "/api/users/:id",
+//       "/api/users/register",
+//       "/api/users/login",
+//       "/api/users/register",
+//       "/api/users",
+//       "/api/users/",
+//       "/api/users/adduser",
+//       "/api/users/adduser/",
+//       "/api/goals/",
+//       "/api/goals",
+//       "/api/goals/:id",
+//       "/api/transactions",
+//       "/api/transactions/",
+//       "/api/transactions/:id",
+//     ],
+//   };
+//   let user_type = "unathorised";
+//   if (request.user.usertype != null) {
+//     user_type = request.user.usertype;
+//   }
+//   if (user_type in routes) {
+//     const allowed_routes = routes[user_type];
+//     if (allowed_routes.some((url) => request.originalUrl.startsWith(url))) {
+//       next();
+//     } else {
+//       response.status(403).json("access forbidden");
+//     }
+//   } else {
+//     response.status(401).json("client not authorised");
+//   }
+// });
 
 // Serve frontend
 if (process.env.NODE_ENV === "production") {
@@ -130,7 +217,23 @@ app.use(errors());
 app.use(errorHandler);
 
 // Allow the following IPs
-const ips = ["::1", "127.0.0.1]"];
+const ips = [["::1", "::ffff:127.0.0.1", "127.0.0.1"]];
 
 app.use(ipfilter(ips, { mode: "allow" }));
+if (app.get('env') === 'development') {
+  app.use((err, req, res, _next) => {
+    console.log('Error handler', err)
+    if (err instanceof IpDeniedError) {
+      res.status(401)
+    } else {
+      res.status(err.status || 500)
+    }
+
+    res.render('error', {
+      message: 'You shall not pass',
+      error: err
+    })
+  })
+}
+
 app.listen(port, () => console.log(`Server started on port ${port}`));

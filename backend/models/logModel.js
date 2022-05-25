@@ -23,7 +23,7 @@ const logSchema = mongoose.Schema(
     },
   },
   {
-    timestamps: true, //auto time for edit or create
+    timestamps: true, //auto time
   }
 );
 

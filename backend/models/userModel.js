@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "Please select usertype"],
       default: "user",
-      // enum: ["admin", "user"],
+      enum: ["admin", "user"],
     },
     password: {
       type: String,

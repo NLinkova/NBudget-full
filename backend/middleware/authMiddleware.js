@@ -50,6 +50,7 @@ const protectAdmin = asyncHandler(async (req, res, next) => {
       // Get user from the token
       req.user = await User.findById(decoded.id).select("-password");
       if (req.user.usertype !== "admin") {
+        console.log(usertype + "middleware")
         return next(
           new ErrorResponse(
             `User role ${req.user.usertype} is not authorized to access this route`,

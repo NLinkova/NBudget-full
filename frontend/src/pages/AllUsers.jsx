@@ -34,6 +34,7 @@ function AllUsers() {
         Authorization: "Bearer " + user.token,
         Accept: "application/json",
       },
+      
     })
       .then((response) => {
         if (!response.ok) {

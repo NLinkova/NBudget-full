@@ -1,7 +1,7 @@
 # NBudget
 
 This student project, TAFE Queensland.
-NBudget is a money control system.
+NBudget is a money control system FRONT END.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 # Purpose

@@ -11,6 +11,7 @@ export default function Register() {
   //state for input data
   const [formData, setFormData] = useState({
     email: "",
+    usertype: "user",
     password: "",
   });
 
@@ -88,9 +89,9 @@ export default function Register() {
     e.preventDefault();
     const userData = {
       email,
+      usertype: "user",
       password,
     };
-    console.log(userData);
     dispatch(register(userData));
   };
 

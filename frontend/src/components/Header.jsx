@@ -83,7 +83,7 @@ function Header({ SwitchTheme }) {
                   </li>
                   <li className="nav-item">
                     <button className="btn" onClick={onLogout}>
-                      <FontAwesomeIcon icon={faUser} /> Sing out
+                      <FontAwesomeIcon icon={faUser} /> Sign out
                     </button>
                   </li>
                 </>

@@ -25,10 +25,38 @@ This system is designed to supply financial observe and advice for those who des
 
 ## Available Scripts
 
-In the project directory, you can run:
 
-### `npm i && npm start`
+## Usage
+
+```
+change config.env file in config folder
+add your MONGO_URI
+
+```
+
+```
+ npm install
+ cd frontend npm install
+ cd ..
+ 
+ # Run front and backend
+ npm run dev
+ 
+ # Backend only
+ npm run server
+ 
+ # Frontend only
+ npm run frontend
+ 
+ # Build client
+ cd frontend
+ npm run build
+ 
+ # Prod
+ npm start
+```
+
 
 ### link
 
-https://nlinkova.github.io/NBudget/
+https://nbudget-money-app.herokuapp.com/dashboard
