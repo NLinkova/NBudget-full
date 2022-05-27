@@ -4,7 +4,7 @@ const { celebrate, Joi } = require("celebrate");
 const {
   registerUser,
   loginUser,
-  // logoutUser,
+  logoutUser,
   getMe,
   getAllUsers,
   deleteUser,
@@ -17,7 +17,7 @@ router.post(
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().email().required(),
-      usertype: Joi.string().required().default('user').min(2).max(6),
+      usertype: Joi.string().required().default("user").min(2).max(6),
       password: Joi.string().required().min(4),
     }),
   }),
@@ -33,7 +33,7 @@ router.post(
   }),
   loginUser
 );
-// router.post("/loguot", logoutUser);does not necessary as token expires in 10 days
+router.post("/logout", logoutUser);
 router.get("/me", protect, getMe);
 //for admin only
 router.get("/all", protectAdmin, getAllUsers);
@@ -46,12 +46,6 @@ router.post(
       password: Joi.string().required().min(4),
     }),
   }),
-  protectAdmin,
-  registerUser
-);
-router.get(
-  "/adduser",
-  protectAdmin,
   registerUser
 );
 

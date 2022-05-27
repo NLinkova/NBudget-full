@@ -22,21 +22,25 @@ const login = async (userData) => {
 };
 
 // Logout user
-const logout = () => {
-  localStorage.removeItem("user");
+const logout = async () => {
+  const response = await axios.post(API_URL + "logout");
+  if (response.data) {
+    localStorage.removeItem("user");
+  }
+  return response.data;
 };
 
 // Get users
 const getUsers = async (token) => {
   // let usertoken = JSON.parse(localStorage.getItem('user'));
   // console.log(localStorage.getItem('user'));
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    
-  };
-  const response = await axios.get(API_URL + "all", config);
+  // const config = {
+  //   headers: {
+  //     Authorization: `Bearer ${token}`,
+  //   },
+
+  // };
+  const response = await axios.get(API_URL + "all");
   return response.data;
 };
 

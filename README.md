@@ -2,7 +2,7 @@
 
 This student project, TAFE Queensland.
 NBudget is a money control system.
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), Bootstrap, Node.js, Express and MongoDB.
 
 # Purpose
 
@@ -23,15 +23,12 @@ This system is designed to supply financial observe and advice for those who des
 - 7 All personal information should be secure
 - 8 The service does not have access to a bank account.
 
-## Available Scripts
-
-
 ## Usage
 
 ```
-change config.env file in config folder
-add your MONGO_URI
-
+change config.env file in root folder
+- create config.env
+- add your MONGO_URI
 ```
 
 ```
@@ -57,6 +54,6 @@ add your MONGO_URI
 ```
 
 
-### link
+### Deployment
 
-https://nbudget-money-app.herokuapp.com/dashboard
+https://nbudget-money-app.herokuapp.com

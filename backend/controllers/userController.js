@@ -66,11 +66,19 @@ const loginUser = asyncHandler(async (req, res) => {
       email: user.email,
       usertype: user.usertype,
     };
-    console.log(req.session.user.usertype);
+    console.log(req.session.user.usertype + ` login`);
   } else {
     res.status(400);
     throw new Error("Invalid credentials");
   }
+});
+
+// @desc    Destroy session logout
+// @route   POST /api/users/logout
+// @access  Public
+const logoutUser = asyncHandler(async (req, res) => {
+  req.session.destroy();
+  res.status(200).json({ status: "Logged Out" });
 });
 
 // @desc    Get user data
@@ -99,7 +107,6 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // @access  Private
 const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
-
   if (!user) {
     res.status(400);
     throw new Error("User not found");
@@ -111,6 +118,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 module.exports = {
   registerUser,
   loginUser,
+  logoutUser,
   getMe,
   getAllUsers,
   deleteUser,

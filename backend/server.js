@@ -11,7 +11,7 @@ const { errors } = require("celebrate");
 const asyncHandler = require("express-async-handler");
 const session = require("express-session");
 const helmet = require("helmet");
-const cors = require('cors');
+const cors = require("cors");
 const ipfilter = require("express-ipfilter").IpFilter;
 
 const { errorHandler } = require("./middleware/errorMiddleware");
@@ -38,32 +38,10 @@ app.use(
     secret: process.env.SESSION_SECRET,
     name: "session_id",
     resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false },
+    saveUninitialized: true,
+    cookie: { secure: false, maxAge: 5000 },
   })
 );
-
-
-// //cors
-// const cors = (req, res, next) => {
-//   const { origin } = req.headers;
-//   const { method } = req;
-//   const requestHeaders = req.headers["access-control-request-headers"];
-//   const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
-
-//   res.header("Access-Control-Allow-Origin", origin);
-//   res.header("Access-Control-Allow-Credentials", true);
-
-//   if (method === "OPTIONS") {
-//     res.header("Access-Control-Allow-Methods", DEFAULT_ALLOWED_METHODS);
-//     res.header("Access-Control-Allow-Headers", requestHeaders);
-
-//     return res.end();
-//   }
-//   return next();
-// };
-
-// app.use(cors);
 
 // const sess = {
 //   secret: process.env.SESSION_SECRET,
@@ -81,45 +59,38 @@ app.use(
 // app.use(session(sess));
 
 //rate limiting
+// Here the limiter is set to 1440 * 60 * 1000 to equal 1 day or 24 hours
+// then the max is set to 1000 requests over the 24 hours
 const apiLimiter = rateLimit({
   windowMs: 1440 * 60 * 1000, // 24 hours
   max: 1000, // limit of number of requests per IP
   delayMs: 1000, // delays each request to one each per second (1000 milliseconds)
+  message: "You have reached your limit of requests",
 });
 
 //slow down
+// Here the rate limiter is set 10ms * 100ms to equal 1000ms or 1 second
+// then max is set to 1 request per 1 second
 const slowDowner = slowDown({
-  windowMs: 1000,
-  delayAfter: 1,
-  delayMs: 1000,
+  windowMs: 1000, //1 second
+  delayAfter: 1, //1 request per second, after that
+  delayMs: 1000, // begin adding 1000ms of delay per request above 100:
   message: "One request allowed per second!",
 });
 
 // Apply the rate limiting middleware to API calls only
-app.use("/api", apiLimiter);
 app.use("/api", slowDowner);
-app.use("/api/transactions", require("./routes/transactionRoutes"));
-app.use("/api/goals", require("./routes/goalRoutes"));
-app.use("/api/users", require("./routes/userRoutes"));
-
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
+app.use("/api", apiLimiter);
 
 //logging feature
-app.use(
-  asyncHandler(async (req, res, next) => {
-    let userLoggedIn = req.session.user;
-    console.log(userLoggedIn)
-    try {
-      //if user logedd in
-      if (userLoggedIn != null) {
-        user = req.session.user;
-
-      } else {
-        user = "anonymous";
-        
-      }
+// Here if a user is logged in the middleware will use to either log the
+// users actions and if not logged in some actions are logged
+// This will check for a pre existing session
+app.use((req, res, next) => {
+  let user = req.session.user;
+  console.log(user + ` logtable`);
+  try {
+    if (user) {
       let log = new Log({
         ip: req.ip,
         user: user,
@@ -131,13 +102,63 @@ app.use(
       console.log(log);
       log.save();
       next();
-    } catch (error) {
-      console.log(error);
-      res.status(401);
-      throw new Error("Not inserted");
+    } else {
+      let log = new Log({
+        ip: req.ip,
+        user: "anonymous",
+        email: "email does not exist in database yet",
+        usertype: "user",
+        action: req.method,
+        endpoint: req.path,
+      });
+      console.log(log);
+      log.save();
+      next();
     }
-  })
-);
+  } catch (error) {
+    console.log(error);
+    res.status(401);
+    throw new Error("Not inserted");
+  }
+});
+
+// app.use(
+//   asyncHandler(async (req, res, next) => {
+//     let userLoggedIn = req.session.user;
+//     console.log(userLoggedIn + `logtable`)
+//     try {
+//       //if user logedd in
+//       if (userLoggedIn != null) {
+//         user = req.session.user;
+
+//       } else {
+//         user = "anonymous";
+
+//       }
+//       let log = new Log({
+//         ip: req.ip,
+//         user: user,
+//         email: user.email,
+//         usertype: user.usertype,
+//         action: req.method,
+//         endpoint: req.path,
+//       });
+//       console.log(log);
+//       log.save();
+//       next();
+//     } catch (error) {
+//       console.log(error);
+//       res.status(401);
+//       throw new Error("Not inserted");
+//     }
+//   })
+// );
+
+// Here is where the server checks all the controllers and sends the request to the
+// correct controller, model and then to the database
+app.use("/api/transactions", require("./routes/transactionRoutes"));
+app.use("/api/goals", require("./routes/goalRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
 
 //setting various HTTP headers.
 // This disables the `contentSecurityPolicy` middleware but keeps the rest.
@@ -211,6 +232,9 @@ if (process.env.NODE_ENV === "production") {
   app.get("/", (req, res) => res.send("Please set to production"));
 }
 
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
 // error celebrate handler
 app.use(errors());
 
@@ -220,20 +244,21 @@ app.use(errorHandler);
 const ips = [["::1", "::ffff:127.0.0.1", "127.0.0.1"]];
 
 app.use(ipfilter(ips, { mode: "allow" }));
-if (app.get('env') === 'development') {
+
+if (app.get("env") === "development") {
   app.use((err, req, res, _next) => {
-    console.log('Error handler', err)
+    console.log("Error handler", err);
     if (err instanceof IpDeniedError) {
-      res.status(401)
+      res.status(401);
     } else {
-      res.status(err.status || 500)
+      res.status(err.status || 500);
     }
 
-    res.render('error', {
-      message: 'You shall not pass',
-      error: err
-    })
-  })
+    res.render("error", {
+      message: "You shall not pass",
+      error: err,
+    });
+  });
 }
 
 app.listen(port, () => console.log(`Server started on port ${port}`));

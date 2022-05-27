@@ -82,7 +82,7 @@ export const deleteUser = createAsyncThunk(
 
 // add user
 export const addUser = createAsyncThunk(
-  "users/adduser",
+  "auth/adduser",
   async (user, thunkAPI) => {
     try {
       return await authService.addUser(user);
