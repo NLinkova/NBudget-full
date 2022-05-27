@@ -1,10 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Switch,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { ToastContainer } from "react-toastify";
@@ -21,6 +15,7 @@ import AddUser from "./pages/AddUser";
 
 function App() {
   const [isDarkMode, setDarkMode] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
 
   //dark/light mode functions
   useEffect(() => {
@@ -51,7 +46,6 @@ function App() {
     }
   }
 
-  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <div className="App">
       <Router>

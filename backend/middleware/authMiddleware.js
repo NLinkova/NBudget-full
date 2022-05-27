@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 
+//protection middleware for private routes
 const protect = asyncHandler(async (req, res, next) => {
   let token;
   if (

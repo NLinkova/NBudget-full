@@ -20,6 +20,7 @@ const Log = require("./models/logModel.js");
 const port = process.env.PORT || 5000;
 dotenv.config({ path: "./config.env" });
 
+//connection to the database
 connectDB();
 
 const app = express();
@@ -46,25 +47,11 @@ app.use(
   })
 );
 
+//developing middleware
 app.use((req, res, next) => {
   console.log(req.session);
   next();
 });
-
-// const sess = {
-//   secret: process.env.SESSION_SECRET,
-//   name: "session_id",
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: { secure: false, maxAge: 5000 },
-// };
-
-// if (process.env.NODE_ENV === "production") {
-//   app.set("trust proxy", 1); // trust first proxy
-//   sess.cookie.secure = true; // serve secure cookies
-// }
-
-// app.use(session(sess));
 
 //rate limiting
 // Here the limiter is set to 1440 * 60 * 1000 to equal 1 day or 24 hours
@@ -96,7 +83,6 @@ app.use("/api", apiLimiter);
 // This will check for a pre existing session
 app.use((req, res, next) => {
   let user = req.session.user;
-  // console.log(user + ` logtable`);
   try {
     if (user) {
       let log = new Log({
@@ -130,102 +116,19 @@ app.use((req, res, next) => {
   }
 });
 
-// app.use(
-//   asyncHandler(async (req, res, next) => {
-//     let userLoggedIn = req.session.user;
-//     console.log(userLoggedIn + `logtable`)
-//     try {
-//       //if user logedd in
-//       if (userLoggedIn != null) {
-//         user = req.session.user;
-
-//       } else {
-//         user = "anonymous";
-
-//       }
-//       let log = new Log({
-//         ip: req.ip,
-//         user: user,
-//         email: user.email,
-//         usertype: user.usertype,
-//         action: req.method,
-//         endpoint: req.path,
-//       });
-//       console.log(log);
-//       log.save();
-//       next();
-//     } catch (error) {
-//       console.log(error);
-//       res.status(401);
-//       throw new Error("Not inserted");
-//     }
-//   })
-// );
-
 // Here is where the server checks all the controllers and sends the request to the
 // correct controller, model and then to the database
 app.use("/api/transactions", require("./routes/transactionRoutes"));
 app.use("/api/goals", require("./routes/goalRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 
-//setting various HTTP headers.
+// setting various HTTP headers
 // This disables the `contentSecurityPolicy` middleware but keeps the rest.
-// app.use(
-//   helmet({
-//     contentSecurityPolicy: false,
-//   })
-// );
-
-// // User access control middleware
-// app.use((request, response, next) => {
-//   //define routes for different roles
-//   const routes = {
-//     unathorised: ["/api/users/register", "/api/users/login"],
-//     user: [
-//       "/api/users",
-//       "/api/users/:id",
-//       "/api/users/me",
-//       "/api/users/",
-//       "/api/goals/",
-//       "/api/goals",
-//       "/api/goals/:id",
-//       "/api/transactions",
-//       "/api/transactions/",
-//       "/api/transactions/:id",
-//     ],
-//     admin: [
-//       "/api/users/all",
-//       "/api/users/:id",
-//       "/api/users/register",
-//       "/api/users/login",
-//       "/api/users/register",
-//       "/api/users",
-//       "/api/users/",
-//       "/api/users/adduser",
-//       "/api/users/adduser/",
-//       "/api/goals/",
-//       "/api/goals",
-//       "/api/goals/:id",
-//       "/api/transactions",
-//       "/api/transactions/",
-//       "/api/transactions/:id",
-//     ],
-//   };
-//   let user_type = "unathorised";
-//   if (request.user.usertype != null) {
-//     user_type = request.user.usertype;
-//   }
-//   if (user_type in routes) {
-//     const allowed_routes = routes[user_type];
-//     if (allowed_routes.some((url) => request.originalUrl.startsWith(url))) {
-//       next();
-//     } else {
-//       response.status(403).json("access forbidden");
-//     }
-//   } else {
-//     response.status(401).json("client not authorised");
-//   }
-// });
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 
 // Serve frontend
 if (process.env.NODE_ENV === "production") {
@@ -268,16 +171,6 @@ if (app.get("env") === "development") {
     });
   });
 }
-
-//navigate if 401 or 403 to home page
-// app.use((err, req, res, next) => {
-//   const { statusCode = 401 || 403 } = err;
-//    if (res.status(statusCode).send({
-//     message: statusCode === 500 ? "Server error" : message,
-//   }));
-//   next();
-
-// });
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
