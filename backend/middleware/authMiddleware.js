@@ -38,14 +38,12 @@ const protectAdmin = asyncHandler(async (req, res, next) => {
     try {
       // Get token from header
       token = req.headers.authorization.split(" ")[1]; // turn to the array
-
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
       // Get user from the token
       req.user = await User.findById(decoded.id).select("-password");
       if (req.user.usertype !== "admin") {
-        console.log(usertype + `middleware`)
+        console.log(usertype + `middleware`);
         return next(
           new ErrorResponse(
             `User role ${req.user.usertype} is not authorized to access this route`,
@@ -60,7 +58,6 @@ const protectAdmin = asyncHandler(async (req, res, next) => {
       throw new Error("Not authorized");
     }
   }
-
   if (!token) {
     res.status(401);
     throw new Error("Not authorized, no token");

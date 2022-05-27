@@ -51,11 +51,14 @@ const registerUser = asyncHandler(async (req, res) => {
 // @access  Public
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-
   // Check for user email
   const user = await User.findOne({ email });
 
   if (user && (await bcrypt.compare(password, user.password))) {
+    req.session.user = {
+      _id: user._id,
+      usertype: user.usertype,
+    };
     res.json({
       _id: user.id,
       email: user.email,
@@ -63,7 +66,7 @@ const loginUser = asyncHandler(async (req, res) => {
       token: generateToken({ _id: user._id, usertype: user.usertype }),
     });
     req.session.user = {
-      email: user.email,
+      _id: user._id,
       usertype: user.usertype,
     };
     console.log(req.session.user.usertype + ` login`);

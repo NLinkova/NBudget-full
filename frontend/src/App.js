@@ -1,4 +1,10 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Switch,
+  Navigate,
+} from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { ToastContainer } from "react-toastify";
@@ -10,7 +16,7 @@ import Header from "./components/Header";
 import PageNotFound from "./components/PageNotFound";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import AllUsers from "./pages/AllUsers"
+import AllUsers from "./pages/AllUsers";
 import AddUser from "./pages/AddUser";
 
 function App() {
@@ -45,6 +51,7 @@ function App() {
     }
   }
 
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <div className="App">
       <Router>
@@ -55,9 +62,19 @@ function App() {
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/register" element={<Register />} />
             <Route exact path="/dashboard" element={<Dashboard />} />
-            <Route exact path="/admin" element={<AllUsers />} />
-            <Route exact path="/adduser" element={<AddUser />} />
+
             <Route exact path="*" element={<PageNotFound />} />
+            {user && user.usertype === "admin" ? (
+              <Route exact path="/admin" element={<AllUsers />} />
+            ) : (
+              <Route exact path="/dashboard" element={<Dashboard />} />
+            )}
+
+            {user && user.usertype === "admin" ? (
+              <Route exact path="/adduser" element={<AddUser />} />
+            ) : (
+              <Route exact path="/dashboard" element={<Dashboard />} />
+            )}
           </Routes>
           <Footer />
         </div>

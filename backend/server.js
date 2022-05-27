@@ -28,20 +28,28 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+//CORS middleware
 app.use(
   cors({
     origin: "*",
   })
 );
+
+//session middleware
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     name: "session_id",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, maxAge: 5000 },
+    cookie: { httpOnly: true, secure: false, maxAge: 5000 },
   })
 );
+
+app.use((req, res, next) => {
+  console.log(req.session);
+  next();
+});
 
 // const sess = {
 //   secret: process.env.SESSION_SECRET,
@@ -88,7 +96,7 @@ app.use("/api", apiLimiter);
 // This will check for a pre existing session
 app.use((req, res, next) => {
   let user = req.session.user;
-  console.log(user + ` logtable`);
+  // console.log(user + ` logtable`);
   try {
     if (user) {
       let log = new Log({
@@ -107,7 +115,7 @@ app.use((req, res, next) => {
         ip: req.ip,
         user: "anonymous",
         email: "email does not exist in database yet",
-        usertype: "user",
+        usertype: "user unauthorised",
         action: req.method,
         endpoint: req.path,
       });
@@ -260,5 +268,23 @@ if (app.get("env") === "development") {
     });
   });
 }
+
+//navigate if 401 or 403 to home page
+// app.use((err, req, res, next) => {
+//   const { statusCode = 401 || 403 } = err;
+//    if (res.status(statusCode).send({
+//     message: statusCode === 500 ? "Server error" : message,
+//   }));
+//   next();
+
+// });
+
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message } = err;
+  res.status(statusCode).send({
+    message: statusCode === 500 ? "Server error" : message,
+  });
+  next();
+});
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
