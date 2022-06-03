@@ -116,11 +116,18 @@ app.use((req, res, next) => {
   }
 });
 
+// Allow the following IPs
+const ips = [["::1", "::ffff:127.0.0.1", "127.0.0.1"]];
+
 // Here is where the server checks all the controllers and sends the request to the
 // correct controller, model and then to the database
 app.use("/api/transactions", require("./routes/transactionRoutes"));
 app.use("/api/goals", require("./routes/goalRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
+
+//defining admin IP address
+app.get("/api/users/all", ipfilter(ips, { mode: "allow" }));
+app.post("/api/users/adduser", ipfilter(ips, { mode: "allow" }));
 
 // setting various HTTP headers
 // This disables the `contentSecurityPolicy` middleware but keeps the rest.
@@ -151,10 +158,22 @@ app.use(errors());
 
 app.use(errorHandler);
 
-// Allow the following IPs
-const ips = [["::1", "::ffff:127.0.0.1", "127.0.0.1"]];
+//IP whitelist error handler
+if (app.get("env") === "development") {
+  app.use((err, req, res, _next) => {
+    console.log("Error handler", err);
+    if (err instanceof IpDeniedError) {
+      res.status(401);
+    } else {
+      res.status(err.status || 500);
+    }
 
-app.use(ipfilter(ips, { mode: "allow" }));
+    res.render("error", {
+      message: "You shall not pass",
+      error: err,
+    });
+  });
+}
 
 if (app.get("env") === "development") {
   app.use((err, req, res, _next) => {

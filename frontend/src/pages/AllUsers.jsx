@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteUser, reset } from "../features/auth/authSlice";
+import { deleteUser, updateUser, reset } from "../features/auth/authSlice";
 import Spinner from "../components/Spinner";
 
 function AllUsers() {
@@ -34,7 +34,6 @@ function AllUsers() {
         Authorization: "Bearer " + user.token,
         Accept: "application/json",
       },
-      
     })
       .then((response) => {
         if (!response.ok) {
@@ -70,7 +69,6 @@ function AllUsers() {
                     Add new user
                   </Link>
                 </div>
-
                 <div className="row">
                   <div className="col-lg-6 mb-4">
                     <div className="card shadow mb-4">
@@ -79,6 +77,7 @@ function AllUsers() {
                           <tr>
                             <th>Email</th>
                             <th>Usertype</th>
+                            <th>Change Usertype</th>
                             <th>Delete</th>
                           </tr>
                           {users.map((user, key) => {
@@ -86,6 +85,18 @@ function AllUsers() {
                               <tr key={key} user={user}>
                                 <td>{user.email}</td>
                                 <td>{user.usertype}</td>
+                                <td>
+                                  <button
+                                    onClick={() => {
+                                      dispatch(updateUser(user._id));
+                                      debugger;
+                                      window.location.reload();
+                                    }}
+                                    className="btn btn-outline-info"
+                                  >
+                                    v
+                                  </button>
+                                </td>
                                 <td>
                                   <button
                                     onClick={() => {

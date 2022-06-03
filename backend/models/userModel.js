@@ -16,7 +16,10 @@ const userSchema = mongoose.Schema(
     password: {
       type: String,
       required: [true, "Please add a password"],
-      min: [4, "Please use 4 more symbols"],
+      min: [
+        8,
+        "Please use 8 more symbols, uppercase and lowcase characters and special symbol",
+      ],
     },
   },
   {

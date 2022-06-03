@@ -44,6 +44,12 @@ const getUsers = async (token) => {
   return response.data;
 };
 
+// Update user
+const updateUser = async (userId, data) => {
+  const response = await axios.patch(API_URL + userId, data);
+  return response.data;
+};
+
 // Delete user
 const deleteUser = async (userId) => {
   const response = await axios.delete(API_URL + userId);
@@ -61,6 +67,7 @@ const authService = {
   logout,
   login,
   deleteUser,
+  updateUser,
   getUsers,
   addUser,
 };

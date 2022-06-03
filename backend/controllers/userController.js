@@ -13,7 +13,6 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Please add all fields");
   }
-
   // Check if user exists
   const userExists = await User.findOne({ email }); //method to check user existing
 
@@ -118,6 +117,34 @@ const deleteUser = asyncHandler(async (req, res) => {
   res.status(200).json({ id: req.params.id });
 });
 
+// @desc    Update user
+// @route   UPDATE /api/users/:id
+// @access  Private
+const updateUser = asyncHandler(async (req, res) => {
+  // const { usertype } = req.body;
+  const user = await User.findByIdAndUpdate(
+    req.params.id,
+    {
+      usertype: "admin",
+    },
+    {
+      new: true,
+      runValidators: true,
+      upsert: false,
+    }
+  );
+  if (user) {
+    res.status(200).json({
+      _id: user.id,
+      email: user.email,
+      usertype: user.usertype,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid user data");
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -125,4 +152,5 @@ module.exports = {
   getMe,
   getAllUsers,
   deleteUser,
+  updateUser,
 };

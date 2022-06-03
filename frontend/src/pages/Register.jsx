@@ -148,13 +148,14 @@ export default function Register() {
                 onFocus={handleFocus}
                 style={style(error)}
                 ref={ref}
-                pattern="[a-z0-9._%+-].{4,}"
-                title="At least 4 or more characters"
+                pattern="(?=[A-Za-z0-9@#$%^&+!=]+$)^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+!=])(?=.{8,}).*$"
+                title="Please use 8 more symbols, uppercase and lowercase characters and special symbol"
                 required
               />
               {showErrorText && (
                 <p role="alert" style={{ color: "rgba(94, 128, 197, 0.89)" }}>
-                  Please make sure you've entered more than 4 characters
+                  Please use 8 more symbols, uppercase and lowercase characters
+                  and special symbol
                 </p>
               )}
             </div>

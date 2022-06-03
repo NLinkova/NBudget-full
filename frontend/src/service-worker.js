@@ -53,7 +53,7 @@ registerRoute(
   // Add in any other file extensions or routing criteria as needed.
   ({ url }) =>
     url.origin === self.location.origin &&
-    url.pathname.endsWith(".(png|svg|jpg|jpeg)$"), // Customize this strategy as needed, e.g., by changing to CacheFirst.
+    url.pathname.endsWith(".(png|svg|jpg|jpeg|)$"), // Customize this strategy as needed, e.g., by changing to CacheFirst.
   new StaleWhileRevalidate({
     cacheName: "images",
     plugins: [
@@ -67,7 +67,8 @@ registerRoute(
 registerRoute(
   // Add in any other file extensions or routing criteria as needed.
   ({ url }) =>
-    url.origin === self.location.origin && url.pathname.endsWith(".(jsx|js)$"), // Customize this strategy as needed, e.g., by changing to CacheFirst.
+    url.origin === self.location.origin &&
+    url.pathname.endsWith(".(jsx|js|json)$"), // Customize this strategy as needed, e.g., by changing to CacheFirst.
   new StaleWhileRevalidate({
     cacheName: "scripts",
     plugins: [
@@ -104,4 +105,47 @@ self.addEventListener("message", (event) => {
   }
 });
 
+// app-shell
+workbox.routing.registerRoute("/", new workbox.strategies.NetworkFirst());
+
 // Any other custom service worker logic can go here.
+
+const bgSyncPluginTransaction = new BackgroundSyncPlugin("transactionQueue", {
+  maxRetentionTime: 60, // Retry for max of 1 Hour (specified in minutes)
+});
+
+registerRoute(
+  ({ url }) => url.pathname.includes("api/transactions"),
+  new NetworkOnly({
+    plugins: [bgSyncPluginTransaction],
+  }),
+  "POST"
+);
+
+registerRoute(
+  ({ url }) => url.pathname.includes("api/transactions"),
+  new NetworkOnly({
+    plugins: [bgSyncPluginTransaction],
+  }),
+  "DELETE"
+);
+
+const bgSyncPluginGoal = new BackgroundSyncPlugin("goalQueue", {
+  maxRetentionTime: 60, // Retry for max of 1 Hour (specified in minutes)
+});
+
+registerRoute(
+  ({ url }) => url.pathname.includes("api/goals"),
+  new NetworkOnly({
+    plugins: [bgSyncPluginGoal],
+  }),
+  "POST"
+);
+
+registerRoute(
+  ({ url }) => url.pathname.includes("api/goals"),
+  new NetworkOnly({
+    plugins: [bgSyncPluginGoal],
+  }),
+  "DELETE"
+);

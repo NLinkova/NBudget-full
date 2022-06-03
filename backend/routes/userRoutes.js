@@ -8,6 +8,7 @@ const {
   getMe,
   getAllUsers,
   deleteUser,
+  updateUser,
   addUser,
 } = require("../controllers/userController");
 const { protect, protectAdmin } = require("../middleware/authMiddleware");
@@ -18,7 +19,7 @@ router.post(
     body: Joi.object().keys({
       email: Joi.string().email().required(),
       usertype: Joi.string().required().default("user").min(2).max(6),
-      password: Joi.string().required().min(4),
+      password: Joi.string().required().min(8),
     }),
   }),
   registerUser
@@ -28,7 +29,7 @@ router.post(
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().email().required(),
-      password: Joi.string().required().min(4),
+      password: Joi.string().required().min(8),
     }),
   }),
   loginUser
@@ -43,12 +44,21 @@ router.post(
     body: Joi.object().keys({
       email: Joi.string().email().required(),
       usertype: Joi.string().required().min(2).max(6),
-      password: Joi.string().required().min(4),
+      password: Joi.string().required().min(8),
     }),
   }),
   registerUser
 );
 
 router.delete("/:id", deleteUser);
+router.patch(
+  "/:id",
+  celebrate({
+    body: Joi.object().keys({
+      usertype: Joi.string().required().min(2).max(6),
+    }),
+  }),
+  updateUser
+);
 
 module.exports = router;
