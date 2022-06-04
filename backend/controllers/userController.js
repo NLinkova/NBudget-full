@@ -64,7 +64,7 @@ const loginUser = asyncHandler(async (req, res) => {
       usertype: user.usertype,
       token: generateToken({ _id: user._id, usertype: user.usertype }),
     });
-    req.session.user = {
+    res.session.user = {
       _id: user._id,
       usertype: user.usertype,
     };
@@ -99,6 +99,7 @@ const generateToken = (id, usertype) => {
 
 //Get all users
 //GET /api/users
+//access Admin
 const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find();
   res.status(200).json(users);
@@ -106,7 +107,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 
 // @desc    Delete user
 // @route   DELETE /api/users/:id
-// @access  Private
+// @access  Admin
 const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
   if (!user) {
@@ -117,32 +118,17 @@ const deleteUser = asyncHandler(async (req, res) => {
   res.status(200).json({ id: req.params.id });
 });
 
-// @desc    Update user
-// @route   UPDATE /api/users/:id
-// @access  Private
+// // @desc    Update user
+// // @route   UPDATE /api/users/:id
+// // @access  Admin
 const updateUser = asyncHandler(async (req, res) => {
-  // const { usertype } = req.body;
-  const user = await User.findByIdAndUpdate(
-    req.params.id,
-    {
-      usertype: "admin",
-    },
-    {
-      new: true,
-      runValidators: true,
-      upsert: false,
-    }
-  );
-  if (user) {
-    res.status(200).json({
-      _id: user.id,
-      email: user.email,
-      usertype: user.usertype,
-    });
-  } else {
+  const user = await User.findById(req.params.id);
+  if (!user) {
     res.status(400);
-    throw new Error("Invalid user data");
+    throw new Error("User not found");
   }
+  await user.updateOne({ $set: { usertype: "admin" } });
+  res.status(200).json({ id: req.params.id });
 });
 
 module.exports = {

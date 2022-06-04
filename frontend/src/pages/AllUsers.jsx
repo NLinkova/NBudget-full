@@ -70,54 +70,51 @@ function AllUsers() {
                   </Link>
                 </div>
                 <div className="row">
-                  <div className="col-lg-6 mb-4">
-                    <div className="card shadow mb-4">
-                      <table className="table">
-                        <tbody>
-                          <tr>
-                            <th>Email</th>
-                            <th>Usertype</th>
-                            <th>Change Usertype</th>
-                            <th>Delete</th>
-                          </tr>
-                          {users.map((user, key) => {
-                            return (
-                              <tr key={key} user={user}>
-                                <td>{user.email}</td>
-                                <td>{user.usertype}</td>
-                                <td>
-                                  <button
-                                    onClick={() => {
-                                      dispatch(updateUser(user._id));
-                                      debugger;
-                                      window.location.reload();
-                                    }}
-                                    className="btn btn-outline-info"
-                                  >
-                                    v
-                                  </button>
-                                </td>
-                                <td>
-                                  <button
-                                    onClick={() => {
-                                      dispatch(deleteUser(user._id));
-                                      window.location.reload();
-                                    }}
-                                    className="btn btn-outline-info"
-                                  >
-                                    x
-                                  </button>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
+                  <div className="card shadow mb-4">
+                    <table className="table table-sm">
+                      <tbody>
+                        <tr>
+                          <th scope="col">Email</th>
+                          <th scope="col">Usertype</th>
+                          <th scope="col">Make admin</th>
+                          <th scope="col">Delete</th>
+                        </tr>
+                        {users.map((user, key) => {
+                          return (
+                            <tr key={key} user={user}>
+                              <td>{user.email}</td>
+                              <td>{user.usertype}</td>
+                              <td>
+                                <button
+                                  onClick={() => {
+                                    dispatch(updateUser(user._id));
+                                    window.location.reload();
+                                  }}
+                                  className="btn btn-outline-info btn-sm"
+                                >
+                                  v
+                                </button>
+                              </td>
+                              <td>
+                                <button
+                                  onClick={() => {
+                                    dispatch(deleteUser(user._id));
+                                    window.location.reload();
+                                  }}
+                                  className="btn btn-outline-info btn-sm"
+                                >
+                                  x
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
-                <div className="row"></div>
               </div>
+              <div className="row"></div>
             </div>
           </div>
         </div>
