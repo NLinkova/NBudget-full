@@ -12,7 +12,7 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import AllUsers from "./pages/AllUsers";
 import AddUser from "./pages/AddUser";
-import TransactionUpdate from "./components/TransactionUpdate";
+import Help from "./pages/Help";
 
 function App() {
   const [isDarkMode, setDarkMode] = useState(false);
@@ -69,12 +69,7 @@ function App() {
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/register" element={<Register />} />
             <Route exact path="/dashboard" element={<Dashboard />} />
-            <Route
-              exact
-              path="/editransaction"
-              element={<TransactionUpdate />}
-            />
-
+            <Route exact path="/help" element={<Help />} />
             <Route exact path="*" element={<PageNotFound />} />
             {user && user.usertype === "admin" ? (
               <Route exact path="/admin" element={<AllUsers />} />

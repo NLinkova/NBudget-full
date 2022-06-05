@@ -9,6 +9,7 @@ import {
   faUser,
   faPencil,
   faUserAlt,
+  faCircleQuestion,
 } from "@fortawesome/free-solid-svg-icons";
 import headerLogo from "../logo.png";
 
@@ -77,7 +78,7 @@ function Header({ SwitchTheme }) {
               {user ? (
                 <>
                   <li className="nav-item">
-                    <Link to="/dashboard" className="nav-link">
+                    <Link to="/dashboard" className="nav-link active">
                       <FontAwesomeIcon icon={faCreditCard} /> Dashboard
                     </Link>
                   </li>
@@ -90,12 +91,12 @@ function Header({ SwitchTheme }) {
               ) : (
                 <>
                   <li className="nav-item">
-                    <Link to="/login" className="nav-link">
+                    <Link to="/login" className="nav-link active">
                       <FontAwesomeIcon icon={faUserAlt} /> Login
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/register" className="nav-link">
+                    <Link to="/register" className="nav-link active">
                       <FontAwesomeIcon icon={faPencil} /> Register
                     </Link>
                   </li>
@@ -108,6 +109,11 @@ function Header({ SwitchTheme }) {
                   </Link>
                 </li>
               )}
+              <li className="nav-item">
+                <Link to="/help" className="nav-link active">
+                  <FontAwesomeIcon icon={faCircleQuestion} /> Help?
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
