@@ -8,7 +8,6 @@ const rateLimit = require("express-rate-limit");
 const slowDown = require("express-slow-down");
 const bodyParser = require("body-parser");
 const { errors } = require("celebrate");
-const asyncHandler = require("express-async-handler");
 const session = require("express-session");
 const helmet = require("helmet");
 const cors = require("cors");
@@ -183,7 +182,6 @@ if (app.get("env") === "development") {
     } else {
       res.status(err.status || 500);
     }
-
     res.render("error", {
       message: "You shall not pass",
       error: err,

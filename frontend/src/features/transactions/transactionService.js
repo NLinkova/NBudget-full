@@ -44,10 +44,24 @@ const deleteTransaction = async (transactionId, token) => {
   return response.data;
 };
 
+// Update user transaction
+const updateTransaction = async (transactionId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.put(API_URL + transactionId, config);
+
+  return response.data;
+};
+
 const transactionService = {
   createTransaction,
   getTransactions,
   deleteTransaction,
+  updateTransaction,
 };
 
 export default transactionService;

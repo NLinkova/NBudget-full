@@ -12,11 +12,15 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import AllUsers from "./pages/AllUsers";
 import AddUser from "./pages/AddUser";
+import TransactionUpdate from "./components/TransactionUpdate";
 
 function App() {
   const [isDarkMode, setDarkMode] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
-
+  // const [isTransactionUpdateOpen, setIsTransactionUpdateOpen] = React.useState(
+  //   false
+  // );
+  // const [isGoalUpdateOpen, setIsGoalUpdateOpen] = React.useState(false);
   //dark/light mode functions
   useEffect(() => {
     let darkTheme = localStorage.getItem("DarkMode");
@@ -46,6 +50,15 @@ function App() {
     }
   }
 
+  // function closeAllPopups() {
+  //   setIsTransactionUpdateOpen(false);
+  //   setIsGoalUpdateOpen(false);
+  // }
+
+  // function handleTransactionClick() {
+  //   setIsTransactionUpdateOpen(true);
+  // }
+
   return (
     <div className="App">
       <Router>
@@ -56,6 +69,11 @@ function App() {
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/register" element={<Register />} />
             <Route exact path="/dashboard" element={<Dashboard />} />
+            <Route
+              exact
+              path="/editransaction"
+              element={<TransactionUpdate />}
+            />
 
             <Route exact path="*" element={<PageNotFound />} />
             {user && user.usertype === "admin" ? (

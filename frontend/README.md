@@ -1,8 +1,7 @@
 # NBudget
 
-This student project, TAFE Queensland.
-NBudget is a money control system FRONT END.
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is front end of NBudget money control system.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), Bootstrap, Node.js, Express and MongoDB.
 
 # Purpose
 
@@ -23,12 +22,22 @@ This system is designed to supply financial observe and advice for those who des
 - 7 All personal information should be secure
 - 8 The service does not have access to a bank account.
 
-## Available Scripts
+## Usage
 
-In the project directory, you can run:
+```
+ cd frontend npm install
 
-### `npm i && npm start`
+ # Run front
+ npm start
 
-### link
+ # Build client
+ cd frontend
+ npm run build
 
-https://nlinkova.github.io/NBudget/
+ # Prod
+ npm start
+```
+
+### Deployment
+
+https://nbudget-money-app.herokuapp.com

@@ -1,10 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deleteTransaction } from "../features/transactions/transactionSlice";
 
 function TransactionItem({ transaction }) {
   const dispatch = useDispatch();
-
   return (
     <>
       <tr>

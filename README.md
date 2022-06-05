@@ -1,6 +1,5 @@
 # NBudget
 
-This student project, TAFE Queensland.
 NBudget is a money control system.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), Bootstrap, Node.js, Express and MongoDB.
 
@@ -35,24 +34,23 @@ change config.env file in root folder
  npm install
  cd frontend npm install
  cd ..
- 
+
  # Run front and backend
  npm run dev
- 
+
  # Backend only
  npm run server
- 
+
  # Frontend only
  npm run frontend
- 
+
  # Build client
  cd frontend
  npm run build
- 
+
  # Prod
  npm start
 ```
-
 
 ### Deployment
 

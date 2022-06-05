@@ -31,24 +31,20 @@ const addTransaction = asyncHandler(async (req, res) => {
 // @access  Private
 const updateTransaction = asyncHandler(async (req, res) => {
   const transaction = await Transaction.findById(req.params.id);
-
   if (!transaction) {
     res.status(400);
     throw new Error("transaction not found");
   }
-
   // Check for user
   if (!req.user) {
     res.status(401);
     throw new Error("User not found");
   }
-
   // Make sure the logged in user matches the goal user
   if (transaction.user.toString() !== req.user.id) {
     res.status(401);
     throw new Error("User not authorized");
   }
-
   const updatedTransaction = await Transaction.findByIdAndUpdate(
     req.params.id,
     req.body,

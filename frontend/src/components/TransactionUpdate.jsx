@@ -3,15 +3,14 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  createTransaction,
+  updateTransaction,
   getTransactions,
   reset,
 } from "../features/transactions/transactionSlice";
 import TransactionItem from "../components/TransactionItem";
-import TransactionUpdate from "./TransactionUpdate";
 import Spinner from "../components/Spinner";
 
-function TransactionForm() {
+function TransactionUpdate({ transaction }) {
   const [text, setText] = useState("");
   const [amount, setAmount] = useState("");
   const navigate = useNavigate();
@@ -20,24 +19,14 @@ function TransactionForm() {
   const { transactions, isLoading, isError, message } = useSelector(
     (state) => state.transactions
   );
-
   useEffect(() => {
-    if (isError) {
-      console.log(message);
-    }
-    if (!user) {
-      navigate("/login");
-    }
-    dispatch(getTransactions());
-
-    return () => {
-      dispatch(reset());
-    };
-  }, [user, navigate, isError, message, dispatch]);
+    setText(text);
+    setAmount(amount);
+  }, [transaction]);
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(createTransaction({ text, amount }));
+    dispatch(updateTransaction({ text, amount }));
     setText("");
     setAmount("");
   };
@@ -49,38 +38,9 @@ function TransactionForm() {
     <div>
       <div className="card-header py-3">
         <h6 className="text-primary fw-bold m-0">
-          <div className="btn-group" role="group"></div>Transactions
+          <div className="btn-group" role="group"></div>Transaction
         </h6>
         <div className="table-responsive">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Transaction</th>
-                <th>Amount</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactions.length > 0 ? (
-                <>
-                  {transactions.map((transaction) => (
-                    <TransactionItem
-                      key={transaction._id}
-                      transaction={transaction}
-                    />
-                  ))}
-                </>
-              ) : (
-                <tr>
-                  <td>
-                    <p>You have not set any transactions</p>
-                  </td>
-                </tr>
-              )}
-
-              <tr></tr>
-            </tbody>
-          </table>
           <section className="form">
             <form onSubmit={onSubmit}>
               <div className="form-group">
@@ -116,4 +76,4 @@ function TransactionForm() {
   );
 }
 
-export default TransactionForm;
+export default TransactionUpdate;
