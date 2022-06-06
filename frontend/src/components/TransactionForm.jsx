@@ -8,7 +8,6 @@ import {
   reset,
 } from "../features/transactions/transactionSlice";
 import TransactionItem from "../components/TransactionItem";
-import TransactionUpdate from "./TransactionUpdate";
 import Spinner from "../components/Spinner";
 
 function TransactionForm() {

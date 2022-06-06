@@ -17,10 +17,7 @@ import Help from "./pages/Help";
 function App() {
   const [isDarkMode, setDarkMode] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
-  // const [isTransactionUpdateOpen, setIsTransactionUpdateOpen] = React.useState(
-  //   false
-  // );
-  // const [isGoalUpdateOpen, setIsGoalUpdateOpen] = React.useState(false);
+
   //dark/light mode functions
   useEffect(() => {
     let darkTheme = localStorage.getItem("DarkMode");
@@ -50,15 +47,6 @@ function App() {
     }
   }
 
-  // function closeAllPopups() {
-  //   setIsTransactionUpdateOpen(false);
-  //   setIsGoalUpdateOpen(false);
-  // }
-
-  // function handleTransactionClick() {
-  //   setIsTransactionUpdateOpen(true);
-  // }
-
   return (
     <div className="App">
       <Router>
@@ -76,7 +64,6 @@ function App() {
             ) : (
               <Route exact path="/dashboard" element={<Dashboard />} />
             )}
-
             {user && user.usertype === "admin" ? (
               <Route exact path="/adduser" element={<AddUser />} />
             ) : (
