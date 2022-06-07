@@ -52,18 +52,22 @@ function Header({ SwitchTheme }) {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav">
+          <div
+            className="collapse navbar-collapse d-flex justify-content-start"
+            id="navbarNav"
+          >
+            <ul className="navbar-nav d-flex justify-content-start align-baseline">
               <li className="nav-item">
                 <Link to="/" className="nav-link active" aria-current="page">
                   <FontAwesomeIcon icon={faHome} /> Home
                 </Link>
               </li>
-              <li className="nav-item m-auto navbar-light">
+              <li className="nav-item d-flex align-items-baseline">
                 <div className="form-check form-switch">
                   <input
                     className="form-check-input"
                     type="checkbox"
+                    role="switch"
                     id="flexSwitchCheckDefault"
                     onChange={SwitchTheme}
                   />
