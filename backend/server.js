@@ -31,7 +31,9 @@ app.use(bodyParser.json());
 //CORS middleware
 app.use(
   cors({
-    origin: "*",
+    origin: [ 'https://nbudget-money-app.herokuapp.com/',
+  'http://nbudget-money-app.herokuapp.com/'
+  ],
   })
 );
 
@@ -47,10 +49,10 @@ app.use(
 );
 
 //developing middleware
-app.use((req, res, next) => {
-  console.log(req.session);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log(req.session);
+//   next();
+// });
 
 //rate limiting
 // Here the limiter is set to 1440 * 60 * 1000 to equal 1 day or 24 hours
@@ -116,7 +118,7 @@ app.use((req, res, next) => {
 });
 
 // Allow the following IPs
-const ips = [["::1", "::ffff:127.0.0.1", "127.0.0.1"]];
+const ips = [["::1", "::ffff:127.0.0.1", "127.0.0.1", '172.20.10.3', "192.168.56.1"]];
 
 // Here is where the server checks all the controllers and sends the request to the
 // correct controller, model and then to the database
@@ -132,10 +134,10 @@ app.post("/api/users/adduser", ipfilter(ips, { mode: "allow" }));
 // This disables the `contentSecurityPolicy` middleware but keeps the rest.
 app.use(
   helmet({
-    contentSecurityPolicy: false,
+    contentSecurityPolicy: false
   })
 );
-
+app.use(helmet({crossOriginResourcePolicy: { policy : "same-origin" }}));
 // Serve frontend
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));
