@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler"); //Simple middleware for h
 
 const Transaction = require("../models/transactionModel");
 const User = require("../models/userModel");
+const ErrorBadRequest = require("../errors/ErrorBadRequest");
 
 //Get all transactions by user id
 //GET /api/transactions
@@ -15,7 +16,7 @@ const getTransactions = asyncHandler(async (req, res) => {
 const addTransaction = asyncHandler(async (req, res) => {
   if (!req.body.text) {
     res.status(400);
-    throw new Error("Please add a text field");
+    throw new ErrorBadRequest("Please add a text field");
   }
   const transaction = await Transaction.create({
     text: req.body.text,
