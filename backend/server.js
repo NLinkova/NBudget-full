@@ -15,7 +15,6 @@ const ipfilter = require("express-ipfilter").IpFilter;
 
 const { errorHandler } = require("./middleware/errorMiddleware");
 const Log = require("./models/logModel.js");
-const { NONAME } = require("dns");
 
 const port = process.env.PORT || 5000;
 dotenv.config({ path: "./config.env" });
@@ -154,7 +153,7 @@ app.post("/api/users/adduser", ipfilter(ips, { mode: "allow" }));
 
 // Serve frontend
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  app.use(express.static( "../frontend/build"));
 
   app.get("*", (req, res) =>
     res.sendFile(
