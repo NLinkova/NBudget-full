@@ -15,6 +15,7 @@ const ipfilter = require("express-ipfilter").IpFilter;
 
 const { errorHandler } = require("./middleware/errorMiddleware");
 const Log = require("./models/logModel.js");
+const { NONAME } = require("dns");
 
 const port = process.env.PORT || 5000;
 dotenv.config({ path: "./config.env" });
@@ -56,7 +57,7 @@ app.use(
     name: "session_id",
     resave: false,
     saveUninitialized: true,
-    cookie: { httpOnly: true, secure: false, maxAge: 5000 },
+    cookie: { httpOnly: true, sameSite: "None", secure: false, maxAge: 5000 },
   })
 );
 
