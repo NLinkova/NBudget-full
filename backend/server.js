@@ -57,7 +57,7 @@ app.use(
     name: "session_id",
     resave: false,
     saveUninitialized: true,
-    cookie: { httpOnly: true, sameSite: "None", secure: false, maxAge: 5000 },
+    cookie: { httpOnly: true, sameSite: "None", secure: true, maxAge: 5000 },
   })
 );
 
