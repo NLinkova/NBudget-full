@@ -28,15 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//CORS middleware
-// app.use(
-//   cors({
-//     origin: [ 'https://nbudget-money-app.herokuapp.com/',
-//   'http://nbudget-money-app.herokuapp.com/'
-//   ],
-//   })
-// );
-
+// CORS middleware
 const CORS_CONFIG = {
   credentials: true,
   origin: [
@@ -44,6 +36,8 @@ const CORS_CONFIG = {
     'http://nbudget-money-app.herokuapp.com/',
     'https://localhost:3000',
     'http://localhost:3000',
+    'https://localhost:5000',
+    'http://localhost:5000',
   ],
 };
 
@@ -56,7 +50,7 @@ app.use(
     name: "session_id",
     resave: false,
     saveUninitialized: true,
-    cookie: { httpOnly: true, sameSite: "None", secure: true, maxAge: 5000 },
+    cookie: { httpOnly: true, sameSite: "None", secure: false, maxAge: 5000 },
   })
 );
 
@@ -142,18 +136,17 @@ app.use("/api/users", require("./routes/userRoutes"));
 app.get("/api/users/all", ipfilter(ips, { mode: "allow" }));
 app.post("/api/users/adduser", ipfilter(ips, { mode: "allow" }));
 
-// // setting various HTTP headers
-// // This disables the `contentSecurityPolicy` middleware but keeps the rest.
-// app.use(
-//   helmet({
-//     contentSecurityPolicy: false
-//   })
-// );
-// app.use(helmet({crossOriginResourcePolicy: { policy : "same-origin" }}));
-
+// setting various HTTP headers
+// This disables the `contentSecurityPolicy` middleware but keeps the rest.
+app.use(
+  helmet({
+    contentSecurityPolicy: false
+  })
+);
+app.use(helmet({crossOriginResourcePolicy: { policy : "same-origin" }}));
 // Serve frontend
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static( "../frontend/build"));
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
 
   app.get("*", (req, res) =>
     res.sendFile(
@@ -182,6 +175,21 @@ if (app.get("env") === "development") {
       res.status(err.status || 500);
     }
 
+    res.render("error", {
+      message: "You shall not pass",
+      error: err,
+    });
+  });
+}
+
+if (app.get("env") === "development") {
+  app.use((err, req, res, _next) => {
+    console.log("Error handler", err);
+    if (err instanceof IpDeniedError) {
+      res.status(401);
+    } else {
+      res.status(err.status || 500);
+    }
     res.render("error", {
       message: "You shall not pass",
       error: err,

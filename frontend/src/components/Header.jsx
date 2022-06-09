@@ -27,7 +27,7 @@ function Header({ SwitchTheme }) {
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container-fluid justify-content-between">
+        <div className="container-fluid">
           <div className="d-flex justify-content-start">
             <Link className="navbar-brand nav-link" to="/">
               <img
@@ -53,7 +53,7 @@ function Header({ SwitchTheme }) {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div
-            className="collapse navbar-collapse d-flex justify-content-start"
+            className="collapse navbar-collapse"
             id="navbarNav"
           >
             <ul className="navbar-nav d-flex justify-content-start align-baseline">
