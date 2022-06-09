@@ -13,7 +13,7 @@ function Home() {
         <p>
           NBudget is a new user-friendly service that allows to control your
           budget. This control budget system collects information about users’
-          expenses and income and prepares a visual report and diagram for the
+          transactions and savings goal and prepares a visual report and diagram for the
           user. The service is created to provide the best possible user
           experience for money management. It will be a mobile-friendly web app,
           which could be accessible at any time.
