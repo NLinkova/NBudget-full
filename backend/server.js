@@ -34,13 +34,14 @@ const CORS_CONFIG = {
   origin: [
     'https://nbudget-money-app.herokuapp.com',
     'http://nbudget-money-app.herokuapp.com',
-    'https://localhost:3000',
+    'https://nbudget-money-app.herokuapp.com/',
+    'http://nbudget-money-app.herokuapp.com/',
     'http://localhost:3000',
-    'https://localhost:5000',
     'http://localhost:5000',
   ],
 };
 
+app.options('*', cors(CORS_CONFIG));
 app.use(cors(CORS_CONFIG));
 
 //session middleware
