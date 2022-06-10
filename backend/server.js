@@ -28,21 +28,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// CORS middleware
-const CORS_CONFIG = {
-  credentials: true,
-  origin: [
-    'https://nbudget-money-app.herokuapp.com',
-    'http://nbudget-money-app.herokuapp.com',
-    'https://nbudget-money-app.herokuapp.com/',
-    'http://nbudget-money-app.herokuapp.com/',
-    'http://localhost:3000',
-    'http://localhost:5000',
-  ],
-};
+// // CORS middleware
+// const CORS_CONFIG = {
+//   credentials: true,
+//   origin: [
+//     'https://nbudget-money-app.herokuapp.com',
+//     'http://nbudget-money-app.herokuapp.com',
+//     'https://nbudget-money-app.herokuapp.com/',
+//     'http://nbudget-money-app.herokuapp.com/',
+//     'http://localhost:3000',
+//     'http://localhost:5000',
+//   ],
+// };
 
-app.options('*', cors(CORS_CONFIG));
-app.use(cors(CORS_CONFIG));
+// app.options('*', cors(CORS_CONFIG));
+// app.use(cors(CORS_CONFIG));
 
 //session middleware
 app.use(
