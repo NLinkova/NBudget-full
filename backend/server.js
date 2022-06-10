@@ -32,8 +32,8 @@ app.use(bodyParser.json());
 const CORS_CONFIG = {
   credentials: true,
   origin: [
-    'https://nbudget-money-app.herokuapp.com/',
-    'http://nbudget-money-app.herokuapp.com/',
+    'https://nbudget-money-app.herokuapp.com',
+    'http://nbudget-money-app.herokuapp.com',
     'https://localhost:3000',
     'http://localhost:3000',
     'https://localhost:5000',
