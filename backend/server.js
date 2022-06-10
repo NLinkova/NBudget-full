@@ -28,21 +28,19 @@ const app = express();
 const CORS_CONFIG = {
   // credentials: true,
   origin: [
-    'https://nbudget-money-app.herokuapp.com',
-    'http://nbudget-money-app.herokuapp.com',
-    'https://nbudget-money-app.herokuapp.com/',
-    'http://nbudget-money-app.herokuapp.com/',
-    'http://localhost:3000',
-    'http://localhost:5000',
-    'http://localhost:3000/',
-    'http://localhost:5000/',
+    "https://nbudget-money-app.herokuapp.com",
+    "http://nbudget-money-app.herokuapp.com",
+    "https://nbudget-money-app.herokuapp.com/",
+    "http://nbudget-money-app.herokuapp.com/",
+    "http://localhost:3000",
+    "http://localhost:5000",
+    "http://localhost:3000/",
+    "http://localhost:5000/",
   ],
 };
 
-app.options('*', cors(CORS_CONFIG));
+app.options("*", cors(CORS_CONFIG));
 app.use(cors(CORS_CONFIG));
-
-
 
 //developing middleware
 // app.use((req, res, next) => {
@@ -74,7 +72,6 @@ app.use(
 // );
 
 // app.use(helmet({crossOriginResourcePolicy: { policy : "same-origin" }}));
-
 
 //rate limiting
 // Here the limiter is set to 1440 * 60 * 1000 to equal 1 day or 24 hours
@@ -140,7 +137,9 @@ app.use((req, res, next) => {
 });
 
 // Allow the following IPs
-const ips = [["::1", "::ffff:127.0.0.1", "127.0.0.1", '172.20.10.3', "192.168.56.1"]];
+const ips = [
+  ["::1", "::ffff:127.0.0.1", "127.0.0.1", "172.20.10.3", "192.168.56.1"],
+];
 
 // Here is where the server checks all the controllers and sends the request to the
 // correct controller, model and then to the database
@@ -185,7 +184,8 @@ if (app.get("env") === "development") {
 
 // Serve frontend
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("/frontend/build"));
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
+
   app.get("*", (req, res) =>
     res.sendFile(
       path.resolve(__dirname, "../", "frontend", "build", "index.html")
