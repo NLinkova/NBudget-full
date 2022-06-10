@@ -24,21 +24,23 @@ connectDB();
 
 const app = express();
 
-// // CORS middleware
-// const CORS_CONFIG = {
-//   credentials: true,
-//   origin: [
-//     'https://nbudget-money-app.herokuapp.com',
-//     'http://nbudget-money-app.herokuapp.com',
-//     'https://nbudget-money-app.herokuapp.com/',
-//     'http://nbudget-money-app.herokuapp.com/',
-//     'http://localhost:3000',
-//     'http://localhost:5000',
-//   ],
-// };
+// CORS middleware
+const CORS_CONFIG = {
+  // credentials: true,
+  origin: [
+    'https://nbudget-money-app.herokuapp.com',
+    'http://nbudget-money-app.herokuapp.com',
+    'https://nbudget-money-app.herokuapp.com/',
+    'http://nbudget-money-app.herokuapp.com/',
+    'http://localhost:3000',
+    'http://localhost:5000',
+    'http://localhost:3000/',
+    'http://localhost:5000/',
+  ],
+};
 
-// app.options('*', cors(CORS_CONFIG));
-// app.use(cors(CORS_CONFIG));
+app.options('*', cors(CORS_CONFIG));
+app.use(cors(CORS_CONFIG));
 
 
 
@@ -59,9 +61,20 @@ app.use(
     name: "session_id",
     resave: false,
     saveUninitialized: true,
-    cookie: { httpOnly: true, sameSite: "None", secure: false, maxAge: 5000 },
+    cookie: { httpOnly: false, sameSite: "none", secure: true, maxAge: 5000 },
   })
 );
+
+// // setting various HTTP headers
+// // This disables the `contentSecurityPolicy` middleware but keeps the rest.
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: false
+//   })
+// );
+
+// app.use(helmet({crossOriginResourcePolicy: { policy : "same-origin" }}));
+
 
 //rate limiting
 // Here the limiter is set to 1440 * 60 * 1000 to equal 1 day or 24 hours
@@ -139,37 +152,6 @@ app.use("/api/users", require("./routes/userRoutes"));
 app.get("/api/users/all", ipfilter(ips, { mode: "allow" }));
 app.post("/api/users/adduser", ipfilter(ips, { mode: "allow" }));
 
-// // setting various HTTP headers
-// // This disables the `contentSecurityPolicy` middleware but keeps the rest.
-// app.use(
-//   helmet({
-//     contentSecurityPolicy: false
-//   })
-// );
-
-// app.use(helmet({crossOriginResourcePolicy: { policy : "same-origin" }}));
-
-// Serve frontend
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
-
-  app.get("*", (req, res) =>
-    res.sendFile(
-      path.resolve(__dirname, "../", "frontend", "build", "index.html")
-    )
-  );
-} else {
-  app.get("/", (req, res) => res.send("Please set to production"));
-}
-
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
-// error celebrate handler
-app.use(errors());
-
-app.use(errorHandler);
-
 //IP whitelist error handler
 if (app.get("env") === "development") {
   app.use((err, req, res, _next) => {
@@ -201,6 +183,22 @@ if (app.get("env") === "development") {
   });
 }
 
+// Serve frontend
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  app.get("*", (req, res) =>
+    res.sendFile(
+      path.resolve(__dirname, "../", "frontend", "build", "index.html")
+    )
+  );
+} else {
+  app.get("/", (req, res) => res.send("Please set to production"));
+}
+
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
+
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   res.status(statusCode).send({
@@ -208,5 +206,10 @@ app.use((err, req, res, next) => {
   });
   next();
 });
+
+// error celebrate handler
+app.use(errors());
+
+app.use(errorHandler);
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
