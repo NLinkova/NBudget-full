@@ -24,10 +24,6 @@ connectDB();
 
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
 // // CORS middleware
 // const CORS_CONFIG = {
 //   credentials: true,
@@ -44,6 +40,18 @@ app.use(bodyParser.json());
 // app.options('*', cors(CORS_CONFIG));
 // app.use(cors(CORS_CONFIG));
 
+
+
+//developing middleware
+// app.use((req, res, next) => {
+//   console.log(req.session);
+//   next();
+// });
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 //session middleware
 app.use(
   session({
@@ -54,12 +62,6 @@ app.use(
     cookie: { httpOnly: true, sameSite: "None", secure: false, maxAge: 5000 },
   })
 );
-
-//developing middleware
-// app.use((req, res, next) => {
-//   console.log(req.session);
-//   next();
-// });
 
 //rate limiting
 // Here the limiter is set to 1440 * 60 * 1000 to equal 1 day or 24 hours
@@ -137,14 +139,16 @@ app.use("/api/users", require("./routes/userRoutes"));
 app.get("/api/users/all", ipfilter(ips, { mode: "allow" }));
 app.post("/api/users/adduser", ipfilter(ips, { mode: "allow" }));
 
-// setting various HTTP headers
-// This disables the `contentSecurityPolicy` middleware but keeps the rest.
-app.use(
-  helmet({
-    contentSecurityPolicy: false
-  })
-);
-app.use(helmet({crossOriginResourcePolicy: { policy : "same-origin" }}));
+// // setting various HTTP headers
+// // This disables the `contentSecurityPolicy` middleware but keeps the rest.
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: false
+//   })
+// );
+
+// app.use(helmet({crossOriginResourcePolicy: { policy : "same-origin" }}));
+
 // Serve frontend
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));
@@ -175,7 +179,6 @@ if (app.get("env") === "development") {
     } else {
       res.status(err.status || 500);
     }
-
     res.render("error", {
       message: "You shall not pass",
       error: err,
