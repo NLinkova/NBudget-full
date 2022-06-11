@@ -32,6 +32,8 @@ const CORS_CONFIG = {
     "http://nbudget-money-app.herokuapp.com",
     "https://nbudget-money-app.herokuapp.com/",
     "http://nbudget-money-app.herokuapp.com/",
+    "https://nbudget-money-app.herokuapp.com/admin",
+    "http://nbudget-money-app.herokuapp.com/admin",
     "http://localhost:5000/api/users/all",
     "http://localhost:3000",
     "http://localhost:5000",
