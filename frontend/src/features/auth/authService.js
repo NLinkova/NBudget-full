@@ -31,14 +31,6 @@ const logout = async () => {
 
 // Get users
 const getUsers = async (token) => {
-  // let usertoken = JSON.parse(localStorage.getItem('user'));
-  // console.log(localStorage.getItem('user'));
-  // const config = {
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-
-  // };
   const response = await axios.get(API_URL + "all");
   return response.data;
 };

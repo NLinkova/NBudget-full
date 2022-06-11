@@ -52,16 +52,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//session middleware
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    name: "session_id",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { httpOnly: false, sameSite: "none", secure: true, maxAge: 5000 },
-  })
-);
+// //session middleware
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET,
+//     name: "session_id",
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { httpOnly: false, sameSite: "none", secure: true, maxAge: 5000 },
+//   })
+// );
 
 // // setting various HTTP headers
 // // This disables the `contentSecurityPolicy` middleware but keeps the rest.
@@ -102,7 +102,7 @@ app.use("/api", apiLimiter);
 // users actions and if not logged in some actions are logged
 // This will check for a pre existing session
 app.use((req, res, next) => {
-  let user = req.session.user;
+  let user = req.user;
   try {
     if (user) {
       let log = new Log({

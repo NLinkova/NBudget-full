@@ -54,10 +54,10 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    req.session.user = {
-      _id: user._id,
-      usertype: user.usertype,
-    };
+    // req.session.user = {
+    //   _id: user._id,
+    //   usertype: user.usertype,
+    // };
     res.status(200).json({
       _id: user.id,
       email: user.email,
@@ -74,7 +74,7 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users/logout
 // @access  Public
 const logoutUser = asyncHandler(async (req, res) => {
-  req.session.destroy();
+  // req.session.destroy();
   res.status(200).json({ status: "Logged Out" });
 });
 
