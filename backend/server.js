@@ -34,11 +34,6 @@ const CORS_CONFIG = {
     "http://nbudget-money-app.herokuapp.com/",
     "https://nbudget-money-app.herokuapp.com/admin",
     "http://nbudget-money-app.herokuapp.com/admin",
-    "http://localhost:5000/api/users/all",
-    "http://localhost:3000",
-    "http://localhost:5000",
-    "http://localhost:3000/",
-    "http://localhost:5000/",
   ],
 };
 
@@ -71,11 +66,11 @@ app.use(
 
 //rate limiting
 // Here the limiter is set to 1440 * 60 * 1000 to equal 1 day or 24 hours
-// then the max is set to 1000 requests over the 24 hours
+// then the max is set to 500 requests over the 24 hours
 const apiLimiter = rateLimit({
   windowMs: 1440 * 60 * 1000, // 24 hours
-  max: 1000, // limit of number of requests per IP
-  delayMs: 1000, // delays each request to one each per second (1000 milliseconds)
+  max: 500, // limit each IP to 500 requests per 24 hours
+  delayMs: 500, // delays each request to one each per 0.5 second
   message: "You have reached your limit of requests",
 });
 
@@ -133,9 +128,7 @@ app.use((req, res, next) => {
 });
 
 // Allow the following IPs
-const ips = [
-  ["::1", "::ffff:127.0.0.1", "127.0.0.1", "172.20.10.3", "192.168.56.1"],
-];
+const ips = [["172.20.10.3", "192.168.56.1"]];
 
 // Here is where the server checks all the controllers and sends the request to the
 // correct controller, model and then to the database
@@ -201,6 +194,7 @@ app.use((err, req, res, next) => {
     message: statusCode === 500 ? "Server error" : message,
   });
   next();
+  res.redirect("/");
 });
 
 // error celebrate handler
