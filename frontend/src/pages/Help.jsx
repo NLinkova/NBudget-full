@@ -19,7 +19,7 @@ function Help() {
           Start control your money adding transactions and savings' goals
         </p>
         <h2>You can have a look at the video below</h2>
-        <img className="" src={helpGif} alt="halping video" />
+        <img className="" src={helpGif} alt="helping video" />
         <p>You can add and delete any of transactions and goals</p>
         <h2>Coming soon...</h2>
         <p>Our app is developing and improving. Future features: </p>

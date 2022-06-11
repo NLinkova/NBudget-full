@@ -33,7 +33,8 @@
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.10",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "production": "^0.0.2"
   },
   "devDependencies": {
     "concurrently": "^7.1.0",
