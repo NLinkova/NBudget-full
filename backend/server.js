@@ -60,15 +60,14 @@ app.use(
   })
 );
 
-// setting various HTTP headers
-// This disables the `contentSecurityPolicy` middleware but keeps the rest.
-app.use(
-  helmet({
-    contentSecurityPolicy: false,
-  })
-);
-
-app.use(helmet({ crossOriginResourcePolicy: { policy: "same-origin" } }));
+// // setting various HTTP headers
+// // This disables the `contentSecurityPolicy` middleware but keeps the rest.
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: false,
+//     crossOriginResourcePolicy: { policy: "same-origin" },
+//   })
+// );
 
 //rate limiting
 // Here the limiter is set to 1440 * 60 * 1000 to equal 1 day or 24 hours
