@@ -58,17 +58,12 @@ const loginUser = asyncHandler(async (req, res) => {
       _id: user._id,
       usertype: user.usertype,
     };
-    res.json({
+    res.status(200).json({
       _id: user.id,
       email: user.email,
       usertype: user.usertype,
       token: generateToken({ _id: user._id, usertype: user.usertype }),
     });
-    res.session.user = {
-      _id: user._id,
-      usertype: user.usertype,
-    };
-    console.log(req.session.user.usertype + ` login`);
   } else {
     res.status(400);
     throw new Error("Invalid credentials");
