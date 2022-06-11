@@ -26,12 +26,13 @@ const app = express();
 
 // CORS middleware
 const CORS_CONFIG = {
-  // credentials: true,
+  credentials: true,
   origin: [
     "https://nbudget-money-app.herokuapp.com",
     "http://nbudget-money-app.herokuapp.com",
     "https://nbudget-money-app.herokuapp.com/",
     "http://nbudget-money-app.herokuapp.com/",
+    "http://localhost:5000/api/users/all",
     "http://localhost:3000",
     "http://localhost:5000",
     "http://localhost:3000/",
@@ -41,12 +42,6 @@ const CORS_CONFIG = {
 
 app.options("*", cors(CORS_CONFIG));
 app.use(cors(CORS_CONFIG));
-
-//developing middleware
-// app.use((req, res, next) => {
-//   console.log(req.session);
-//   next();
-// });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -63,15 +58,15 @@ app.use(
   })
 );
 
-// // setting various HTTP headers
-// // This disables the `contentSecurityPolicy` middleware but keeps the rest.
-// app.use(
-//   helmet({
-//     contentSecurityPolicy: false
-//   })
-// );
+// setting various HTTP headers
+// This disables the `contentSecurityPolicy` middleware but keeps the rest.
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 
-// app.use(helmet({crossOriginResourcePolicy: { policy : "same-origin" }}));
+app.use(helmet({ crossOriginResourcePolicy: { policy: "same-origin" } }));
 
 //rate limiting
 // Here the limiter is set to 1440 * 60 * 1000 to equal 1 day or 24 hours
