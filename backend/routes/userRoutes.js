@@ -37,7 +37,7 @@ router.post(
 router.post("/logout", logoutUser);
 router.get("/me", protect, getMe);
 //for admin only
-router.get("/all", protectAdmin, getAllUsers);
+router.get("/all", getAllUsers);
 router.post(
   "/adduser",
   celebrate({
