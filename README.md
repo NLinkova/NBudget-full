@@ -2,6 +2,12 @@
 
 NBudget is a money control system.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), Bootstrap, Node.js, Express and MongoDB.
+NPM packages:
+
+- bcrypt - password hashing
+- joi, celebrate - server-side validation
+- cors - cors
+- ipFilter - filter for IPs
 
 # Purpose
 
