@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "back end for expenses-tracker",
   "main": "server.js",
-  "homepage": "https://nbudget-money-app.herokuapp.com/",
   "scripts": {
     "start": "node backend/server.js",
     "server": "nodemon backend/server.js",
