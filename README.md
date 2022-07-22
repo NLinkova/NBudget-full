@@ -1,6 +1,6 @@
 # NBudget
 
-NBudget is a money control system.
+NBudget is a money-flow progressive web application with admin control panel.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), Bootstrap, Node.js, Express and MongoDB.
 NPM packages:
 

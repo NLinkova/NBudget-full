@@ -31,9 +31,9 @@ function App() {
   useEffect(() => {
     let theme = document.getElementsByTagName("link")[1];
     if (isDarkMode === true) {
-      theme.setAttribute("href", "./css/bootstrap-night.min.css");
-    } else {
       theme.setAttribute("href", "./css/bootstrap.min.css");
+    } else {
+      theme.setAttribute("href", "./css/bootstrap-night.min.css");
     }
   }, [isDarkMode]);
 
