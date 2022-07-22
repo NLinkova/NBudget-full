@@ -17,6 +17,12 @@ NBudget is a new user-friendly service that allows to control your budget. This 
 
 This system is designed to supply financial observe and advice for those who desire to control their budget. The system allows users to add their expenses and savings. This allows users to visually estimate their budget and check categories that could be reduced or increased. Manual typing money amount in different categories gives a possibility to actually understand and think it over. Which makes users more conscious about money flow.
 
+# Roadmap
+
+<p align="center">
+  <img src="./frontend/src/images/roadmap.png" width="350">
+</p>
+
 # Business Requirements
 
 - 1 All users must be registered in the system.
